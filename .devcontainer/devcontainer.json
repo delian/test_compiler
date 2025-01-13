@@ -1,0 +1,53 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+	"name": "Ubuntu",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/base:jammy"
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "sudo apt update && sudo apt upgrade -y && sudo apt install -y cmake python3-pip build-essential llvm-dev clang bison flex && sudo pip install conan",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"GitHub.copilot-chat",
+				"nick-rudenko.back-n-forth",
+				"aaron-bond.better-comments",
+				"leodevbro.blockman",
+				"wraith13.bracket-lens",
+				"ms-vscode.cpptools-themes",
+				"mikestead.dotenv",
+				"johnpapa.vscode-peacock",
+				"wayou.vscode-todo-highlight",
+				"ms-vscode.cpptools-extension-pack",
+				"Anjali.clipboard-history",
+				"twxs.cmake",
+				"ms-vscode.cmake-tools",
+				"disroop.conan",
+				"FireBlackHat.conan-tools",
+				"tamasfe.even-better-toml",
+				"waderyan.gitblame",
+				"mhutchie.git-graph",
+				"donjayamanne.githistory",
+				"GitHub.copilot",
+				"eamodio.gitlens",
+				"oderwat.indent-rainbow",
+				"liamhammett.inline-parameters",
+				"VisualStudioExptTeam.vscodeintellicode",
+				"VisualStudioExptTeam.vscodeintellicode-completions",
+				"VisualStudioExptTeam.intellicode-api-usage-examples",
+				"ms-vscode.makefile-tools",
+				"hediet.realtime-debugging",
+				"Gruntfuggly.todo-tree",
+				"ms-vscode.vscode-commander"
+			]
+		}
+	},
+	// Configure tool-specific properties.
+	// "customizations": {},
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
