@@ -14,7 +14,7 @@ endif()
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 
-conan_cmake_configure(REQUIRES zlib/1.2.11
+conan_cmake_configure(REQUIRES zlib/1.2.11 llvm-core/13.0.0
                       GENERATORS CMakeDeps
                      )
 conan_cmake_autodetect(settings)
@@ -26,7 +26,8 @@ conan_cmake_install(PATH_OR_REFERENCE .
                     SETTINGS ${settings})
 
 find_package(ZLIB REQUIRED)
+find_package(LLVM REQUIRED)
 
 add_executable(${PROJECT_NAME} src/main.c)
 
-target_link_libraries(${PROJECT_NAME} ZLIB::ZLIB)
+target_link_libraries(${PROJECT_NAME} ZLIB::ZLIB LLVM)
