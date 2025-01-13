@@ -28,6 +28,28 @@ conan_cmake_install(PATH_OR_REFERENCE .
 find_package(ZLIB REQUIRED)
 find_package(LLVM REQUIRED)
 
+
+# find_package(BISON REQUIRED)
+# set(BisonOutput ${CMAKE_SOURCE_DIR}/src/bison_parser.cpp)
+# if(BISON_FOUND)
+#   add_custom_command(
+#     OUTPUT ${BisonOutput}
+#     COMMAND ${BISON_EXECUTABLE} -d -o ${BisonOutput} ${CMAKE_SOURCE_DIR}/src/parser.y
+#     DEPENDS ${CMAKE_SOURCE_DIR}/src/parser.y
+#   )
+# endif()
+
+find_package(FLEX REQUIRED)
+set(FlexOutput ${CMAKE_SOURCE_DIR}/src/flex_lexer.c)
+if(FLEX_FOUND)
+  add_custom_command(
+    OUTPUT ${FlexOutput}
+    COMMAND ${FLEX_EXECUTABLE} -o ${FlexOutput} ${CMAKE_SOURCE_DIR}/src/lexer.l
+    DEPENDS ${CMAKE_SOURCE_DIR}/src/lexer.l
+  )
+endif()
+
+add_library(MyLib ${FlexOutput})
 add_executable(${PROJECT_NAME} src/main.c)
 
 target_link_libraries(${PROJECT_NAME} ZLIB::ZLIB LLVM)
