@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(compressor C)
+project(ply C)
 
 set(CMAKE_BUILD_TYPE Release)
 set(CONAN_HOST_PROFILE default)
@@ -14,7 +14,9 @@ endif()
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 
-conan_cmake_configure(REQUIRES zlib/1.2.11 llvm-core/13.0.0
+conan_cmake_configure(REQUIRES 
+                        zlib/1.2.11 
+                        llvm-core/13.0.0
                       GENERATORS CMakeDeps
                      )
 conan_cmake_autodetect(settings)
@@ -40,16 +42,16 @@ find_package(LLVM REQUIRED)
 # endif()
 
 find_package(FLEX REQUIRED)
-set(FlexOutput ${CMAKE_SOURCE_DIR}/src/flex_lexer.c)
+set(FlexOutput ${CMAKE_SOURCE_DIR}/src/parser/flex_lexer.c)
 if(FLEX_FOUND)
   add_custom_command(
     OUTPUT ${FlexOutput}
     COMMAND ${FLEX_EXECUTABLE} -o ${FlexOutput} ${CMAKE_SOURCE_DIR}/src/lexer.l
-    DEPENDS ${CMAKE_SOURCE_DIR}/src/lexer.l
+    DEPENDS ${CMAKE_SOURCE_DIR}/src/parser/lexer.l
   )
 endif()
 
-add_library(MyLib ${FlexOutput})
+add_library(parser ${FlexOutput})
 add_executable(${PROJECT_NAME} src/main.c)
 
-target_link_libraries(${PROJECT_NAME} ZLIB::ZLIB LLVM)
+target_link_libraries(${PROJECT_NAME} parser LLVM)
