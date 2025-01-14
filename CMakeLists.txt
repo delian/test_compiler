@@ -42,11 +42,11 @@ find_package(LLVM REQUIRED)
 # endif()
 
 find_package(FLEX REQUIRED)
-set(FlexOutput ${CMAKE_SOURCE_DIR}/src/parser/flex_lexer.c)
+set(FlexOutput ${CMAKE_SOURCE_DIR}/src/parser/temp/flex_lexer.c)
 if(FLEX_FOUND)
   add_custom_command(
     OUTPUT ${FlexOutput}
-    COMMAND ${FLEX_EXECUTABLE} -o ${FlexOutput} ${CMAKE_SOURCE_DIR}/src/lexer.l
+    COMMAND ${FLEX_EXECUTABLE} -o ${FlexOutput} ${CMAKE_SOURCE_DIR}/src/parser/lexer.l
     DEPENDS ${CMAKE_SOURCE_DIR}/src/parser/lexer.l
   )
 endif()

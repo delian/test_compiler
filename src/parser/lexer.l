@@ -1,7 +1,7 @@
 %option noyywrap
 
 %{
-#include "lexer.tab.h"
+#include "../lexer.tab.h"
 %}
 
 %%
