@@ -16,10 +16,10 @@ endif()
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 
-conan_cmake_configure(REQUIRES 
-                        zlib/1.2.11 
-                        llvm-core/13.0.0
-                        GENERATORS CMakeDeps)
+conan_cmake_configure(REQUIRES
+                      llvm-core/13.0.0
+                      readline/8.2
+                      GENERATORS CMakeDeps)
 
 conan_cmake_autodetect(settings)
 
@@ -29,14 +29,27 @@ conan_cmake_install(PATH_OR_REFERENCE .
                     PROFILE ${CONAN_HOST_PROFILE}
                     SETTINGS ${settings})
 
-find_package(ZLIB REQUIRED)
 find_package(LLVM REQUIRED)
+
+# find_path(Readline_ROOT_DIR
+#     NAMES include/readline/readline.h
+# )
+# find_path(Readline_INCLUDE_DIR
+#     NAMES readline/readline.h
+#     HINTS ${Readline_ROOT_DIR}/include
+# )
+# find_library(Readline_LIBRARY
+#     NAMES readline
+#     HINTS ${Readline_ROOT_DIR}/lib ${Readline_ROOT_DIR}/lib64 /usr/lib/x86_64-linux-gnu
+#     REQUIRED
+# )
+
 
 find_package(FLEX REQUIRED)
 flex_target(lexer src/parser/lexer.l ${CMAKE_SOURCE_DIR}/src/parser/temp/flex_lexer.c)
 
 find_package(BISON REQUIRED)
-bison_target(parser src/parser/parser.y ${CMAKE_SOURCE_DIR}/src/parser/temp/bison_parser.c)
+bison_target(parser src/parser/parser.y ${CMAKE_SOURCE_DIR}/src/parser/temp/bison_parser.c VERBOSE)
 
 add_flex_bison_dependency(lexer parser)
 

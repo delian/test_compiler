@@ -72,8 +72,8 @@ enum Token
 
 extern int yylval;
 
-int yylex();
-void yyerror(char *s);
-int yyparse();
+// int yylex();
+// void yyerror(char *s);
+// int yyparse();
 
 extern int ymain();

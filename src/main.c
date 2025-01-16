@@ -4,13 +4,15 @@
 
 #include "parser/lexer.tab.h"
 
-int yylval;
+// int yylval;
 
-int main(void) {
+extern int pmain(void);
 
-    printf("Hello World!\n");
+int main(void)
+{
 
-    ymain();
+    // ymain();
+    pmain();
 
     return EXIT_SUCCESS;
 }

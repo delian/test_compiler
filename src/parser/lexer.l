@@ -64,6 +64,7 @@ include                  { return INCLUDE; }
 %%
 
 int ymain() {
+    printf("Lexer> ");
     yylex();
     return 0;
 }
