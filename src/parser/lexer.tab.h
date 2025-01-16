@@ -1,70 +1,74 @@
-#define AND 257
-#define OR 258
-#define NOT 259
-#define XOR 260
-#define NAND 261
-#define NOR 262
-#define XNOR 263
-#define IF 264
-#define THEN 265
-#define ELSE 266
-#define T_INT 267
-#define T_BOOL 268
-#define T_VOID 269
-#define T_STRING 270
-#define T_CHAR 271
-#define T_FLOAT 272
-#define T_DOUBLE 273
-#define T_LONG 274
-#define T_SHORT 275
-#define T_UNSIGNED 276
-#define T_SIGNED 277
-#define TRUE 278
-#define FALSE 279
-#define WHILE 280
-#define RETURN 281
-#define BREAK 282
-#define CONTINUE 283
-#define FOR 284
-#define DECLARE 285
-#define INCLUDE 286
-#define INTEGER 287
-#define FLOAT 288
-#define PLUS 289
-#define MINUS 290
-#define TIMES 291
-#define DIVIDE 292
-#define MOD 293
-#define ASSIGN 294
-#define EQUAL 295
-#define NOTEQUAL 296
-#define LESSTHAN 297
-#define GREATERTHAN 298
-#define LESSEQUAL 299
-#define GREATEREQUAL 300
-#define LPAREN 301
-#define RPAREN 302
-#define LBRACE 303
-#define RBRACE 304
-#define LBRACKET 305
-#define RBRACKET 306
-#define SEMICOLON 307
-#define COMMA 308
-#define COLON 309
-#define DOT 310
-#define ARROW 311
-#define IDENTIFIER 312
-#define MODULO 313
-#define STRING 314
-#define NAME 315
-#define TILDE 316
-#define LE 317
-#define GE 318
-#define EQ 319
-#define LT 320
-#define GT 321
-#define NE 322
-
+enum Token
+{
+    AND,
+    OR,
+    NOT,
+    XOR,
+    NAND,
+    NOR,
+    XNOR,
+    IF,
+    THEN,
+    ELSE,
+    T_INT,
+    T_BOOL,
+    T_VOID,
+    T_STRING,
+    T_CHAR,
+    T_FLOAT,
+    T_DOUBLE,
+    T_LONG,
+    T_SHORT,
+    T_UNSIGNED,
+    T_SIGNED,
+    TRUE,
+    FALSE,
+    WHILE,
+    RETURN,
+    BREAK,
+    CONTINUE,
+    FOR,
+    DECLARE,
+    INCLUDE,
+    INTEGER,
+    FLOAT,
+    PLUS,
+    MINUS,
+    TIMES,
+    DIVIDE,
+    MOD,
+    ASSIGN,
+    EQUAL,
+    NOTEQUAL,
+    LESSTHAN,
+    GREATERTHAN,
+    LESSEQUAL,
+    GREATEREQUAL,
+    LPAREN,
+    RPAREN,
+    LBRACE,
+    RBRACE,
+    LBRACKET,
+    RBRACKET,
+    SEMICOLON,
+    COMMA,
+    COLON,
+    DOT,
+    ARROW,
+    IDENTIFIER,
+    MODULO,
+    STRING,
+    NAME,
+    TILDE,
+    LE,
+    GE,
+    EQ,
+    LT,
+    GT,
+    NE,
+    CARET,
+    DOLLAR
+};
 
 extern int yylval;
 
