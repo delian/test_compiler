@@ -1,5 +1,5 @@
 %{
-    //#include "../lexer.tab.h"
+    // #include "../lexer.tab.h"
     #include <stdio.h>
     
     extern int yylex();
@@ -160,6 +160,20 @@ parameter_exp : expression
 
 %%
 
+/* #include <readline.h> */
+
+#include <readline/readline.h>
+#include <readline/history.h>
+
+#define HISTORYFILE ".ply_history"
+
+typedef struct yy_buffer_state * YY_BUFFER_STATE;
+extern int yyparse();
+extern YY_BUFFER_STATE yy_scan_string(char * str);
+extern void yy_delete_buffer(YY_BUFFER_STATE buffer);
+
+static char *line_read = (char *)NULL;
+
 void yyerror ( char *s )
 {
     printf("ERROR: %s\n", s);
@@ -167,7 +181,17 @@ void yyerror ( char *s )
 
 
 int pmain() {
-    printf("Parser> ");
-    yyparse();
+    char string[] = "int main() { int a = 5; return a; }";
+    YY_BUFFER_STATE buffer = yy_scan_buffer(string, sizeof(string));
+
+    read_history(HISTORYFILE);
+    line_read = readline("Readline> ");
+    printf("X\nY\nReadline %s\n", line_read);
+    if (line_read && *line_read) add_history(line_read);
+    write_history(HISTORYFILE);
+
+    printf("Lexer> "); yylex();
+    printf("Parser> "); yyparse();
+    yy_delete_buffer(buffer);
     return 0;
 }

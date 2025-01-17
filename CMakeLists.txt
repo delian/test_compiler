@@ -38,11 +38,11 @@ find_package(LLVM REQUIRED)
 #     NAMES readline/readline.h
 #     HINTS ${Readline_ROOT_DIR}/include
 # )
-# find_library(Readline_LIBRARY
-#     NAMES readline
-#     HINTS ${Readline_ROOT_DIR}/lib ${Readline_ROOT_DIR}/lib64 /usr/lib/x86_64-linux-gnu
-#     REQUIRED
-# )
+find_library(Readline_LIBRARY
+    NAMES readline
+    HINTS ${Readline_ROOT_DIR}/lib ${Readline_ROOT_DIR}/lib64
+    REQUIRED
+)
 
 
 find_package(FLEX REQUIRED)
@@ -56,5 +56,5 @@ add_flex_bison_dependency(lexer parser)
 add_library(parser ${FLEX_lexer_OUTPUTS} ${BISON_parser_OUTPUTS})
 add_executable(${PROJECT_NAME} src/main.c)
 
-target_link_libraries(${PROJECT_NAME} parser LLVM)
+target_link_libraries(${PROJECT_NAME} parser LLVM ${Readline_LIBRARY})
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)

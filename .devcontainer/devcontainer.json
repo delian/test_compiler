@@ -9,7 +9,7 @@
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo apt update && sudo apt upgrade -y && sudo apt install -y cmake ninja-build python3-pip build-essential llvm-dev clang bison flex && sudo pip install conan",
+	"postCreateCommand": "sudo apt update && sudo apt upgrade -y && sudo apt install -y cmake ninja-build python3-pip build-essential llvm-dev clang bison flex libreadline-dev && sudo pip install conan",
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -42,7 +42,8 @@
 				"ms-vscode.makefile-tools",
 				"hediet.realtime-debugging",
 				"Gruntfuggly.todo-tree",
-				"ms-vscode.vscode-commander"
+				"ms-vscode.vscode-commander",
+				"daohong-emilio.yash"
 			]
 		}
 	},
