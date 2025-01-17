@@ -9,8 +9,14 @@
 %token INCLUDE NAME LPAREN RPAREN RETURN CONTINUE BREAK WHILE FOR IF 
 %token T_VOID T_INT T_FLOAT T_BOOL T_STRING DECLARE TRUE FALSE FLOAT INTEGER STRING
 %token PLUS MINUS TIMES DIVIDE MODULO EQ NE LT LE GT GE AND OR XOR NOT TILDE
+%token RBRACE LBRACE LBRACKET RBRACKET DOLLAR SEMICOLON COMMA EQUAL CARET ELSE
+
+%start program
 
 %%
+
+program : program_block
+        ;
 
 program_block : /* empty */
               | program_block glob_variable
@@ -190,7 +196,6 @@ int pmain() {
     if (line_read && *line_read) add_history(line_read);
     write_history(HISTORYFILE);
 
-    printf("Lexer> "); yylex();
     printf("Parser> "); yyparse();
     yy_delete_buffer(buffer);
     return 0;

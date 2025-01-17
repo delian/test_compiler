@@ -2,6 +2,7 @@
 
 %{
 #include "../lexer.tab.h"
+#include "../temp/bison_parser.h"
 %}
 
 
