@@ -176,6 +176,7 @@ parameter_exp : expression
 typedef struct yy_buffer_state * YY_BUFFER_STATE;
 extern int yyparse();
 extern YY_BUFFER_STATE yy_scan_string(char * str);
+extern void yypush_buffer_state(YY_BUFFER_STATE new_buffer);
 extern void yy_delete_buffer(YY_BUFFER_STATE buffer);
 
 static char *line_read = (char *)NULL;
@@ -187,16 +188,15 @@ void yyerror ( char *s )
 
 
 int pmain() {
-    char string[] = "int main() { int a = 5; return a; }";
-    YY_BUFFER_STATE buffer = yy_scan_buffer(string, sizeof(string));
 
     read_history(HISTORYFILE);
-    line_read = readline("Readline> ");
-    printf("X\nY\nReadline %s\n", line_read);
+    line_read = readline("Parser> ");
     if (line_read && *line_read) add_history(line_read);
     write_history(HISTORYFILE);
 
-    printf("Parser> "); yyparse();
+    YY_BUFFER_STATE buffer = yy_scan_string(line_read);
+    yypush_buffer_state(buffer);
+    yyparse();
     yy_delete_buffer(buffer);
     return 0;
 }
