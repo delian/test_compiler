@@ -46,7 +46,10 @@ find_library(Readline_LIBRARY
 
 
 find_package(BISON REQUIRED)
-bison_target(parser src/parser/parser.y ${CMAKE_SOURCE_DIR}/src/parser/temp/bison_parser.c VERBOSE)
+bison_target(parser src/parser/parser.y ${CMAKE_SOURCE_DIR}/src/parser/temp/bison_parser.c 
+             COMPILE_FLAGS -Wcounterexamples
+             VERBOSE
+            )
 
 find_package(FLEX REQUIRED)
 flex_target(lexer src/parser/lexer.l ${CMAKE_SOURCE_DIR}/src/parser/temp/flex_lexer.c)

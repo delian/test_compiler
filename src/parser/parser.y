@@ -4,6 +4,7 @@
     
     extern int yylex();
     extern int yyparse();
+    void yyerror(char *s);
 %}
 
 %token INCLUDE NAME LPAREN RPAREN RETURN CONTINUE BREAK WHILE FOR IF 

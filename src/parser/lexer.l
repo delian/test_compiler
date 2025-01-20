@@ -3,6 +3,8 @@
 %{
 #include "../lexer.tab.h"
 #include "../temp/bison_parser.h"
+
+// int yylineno = 0;
 %}
 
 
