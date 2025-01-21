@@ -2,7 +2,7 @@
     // #include "../lexer.tab.h"
     #include <stdio.h>
     
-    extern int yylex();
+    extern int yylex(void);
     extern int yyparse();
     void yyerror(char *s);
 %}
@@ -16,7 +16,7 @@
 
 %%
 
-program: /* empty */
+program: %empty
        | program_block
        ;
 
