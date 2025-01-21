@@ -16,26 +16,27 @@
 
 %%
 
-program : program_block
-        ;
+program: /* empty */
+       | program_block
+       ;
 
-program_block : /* empty */
-              | program_block glob_variable
+program_block : program_block glob_variable
               | glob_variable
               | program_block function_declaration
               | function_declaration
-              | program_block ';'
-              | ';'
+              | program_block SEMICOLON
+              | SEMICOLON
               | program_block declare_function
               | declare_function
               | program_block glob_include
               | glob_include
               ;
 
+
 glob_include : INCLUDE NAME
              ;
 
-glob_variable : variable_declaration ';'
+glob_variable : variable_declaration SEMICOLON
               ;
 
 declare_function : DECLARE type_spec NAME LPAREN parameters RPAREN
@@ -44,23 +45,23 @@ declare_function : DECLARE type_spec NAME LPAREN parameters RPAREN
 
 function_declaration : type_spec NAME LPAREN parameters RPAREN block
                      | type_spec NAME LPAREN RPAREN block
-;
+                     ;
 
-parameters : parameters ',' parameter
+parameters : parameters COMMA parameter
            | parameter
-;
+           ;
 
 parameter : type_spec NAME
-;
+          ;
 
 block : statement
-      | '{' statements '}'
-      | '{' '}'
-;
+      | LBRACE statements RBRACE
+      | LBRACE RBRACE
+      ;
 
 statements : statement
-           | statements ';' statement
-;
+           | statements SEMICOLON statement
+           ;
 
 statement : bool_expression
           | variable_declaration
@@ -69,101 +70,98 @@ statement : bool_expression
           | break_statement
           | while_statement
           | for_statement
-          | if_statement
           | variable_assignment
-;
+          | if_statement
+          ;
 
 if_statement : IF LPAREN bool_expression RPAREN block
-;
+             ;
+
+for_statement : FOR LPAREN statement SEMICOLON statement SEMICOLON statement RPAREN block
+              | FOR LPAREN RPAREN block
+              | FOR LPAREN statement RPAREN block
+              | FOR LPAREN statement SEMICOLON statement RPAREN block
+              ;
 
 return_statement : RETURN expression
                  | RETURN
-;
+                 ;
 
 continue_statement : CONTINUE
                    | CONTINUE expression
-;
+                   ;
 
 break_statement : BREAK
                 | BREAK expression
-;
+                ;
 
 while_statement : WHILE LPAREN bool_expression RPAREN block
-;
+                ;
 
-for_statement : FOR LPAREN statement ';' statement ';' statement RPAREN block
-              | FOR LPAREN RPAREN block
-              | FOR LPAREN statement RPAREN block
-              | FOR LPAREN statement ';' statement RPAREN block
-;
-
-expression : expression PLUS term
-           | expression MINUS term
-           | term
-           | string
-;
-
-term : term TIMES factor
-     | term DIVIDE factor
-     | term MODULO factor
-     | factor
-;
 
 bool_expression : bool_expression AND bool_term
                 | bool_expression OR bool_term
                 | bool_expression XOR bool_term
                 | bool_term
-;
+                ;
 
 bool_term : bool_factor
           | NOT bool_factor
           | TILDE bool_factor
-;
+          ;
 
 bool_factor : TRUE
             | FALSE
             | expression
 ;
 
-string: STRING
-;
+expression: expression PLUS term
+          | expression MINUS term
+          | term
+          ;
 
-factor: INTEGER
+term: term TIMES factor
+    | term DIVIDE factor
+    | term MODULO factor
+    | factor
+    ;
+
+factor: LPAREN expression RPAREN
+      | INTEGER
       | MINUS INTEGER
       | FLOAT
       | MINUS FLOAT
       | variable
       | function_call
-      | LPAREN expression RPAREN
-;
+      ;
 
-variable : NAME
-;
+variable: NAME
+        ;
 
-function_call : NAME LPAREN parameters_exp RPAREN
-              | NAME LPAREN RPAREN
-;
+function_call: NAME LPAREN parameters_exp RPAREN
+             | NAME LPAREN RPAREN
+             ;
 
-variable_declaration : type_spec NAME
-                     | type_spec NAME EQ expression
-;
+parameters_exp: parameters_exp COMMA parameter_exp
+              | parameter_exp
+              ;
 
-variable_assignment : NAME EQ expression
-;
+parameter_exp: expression
+             ;
 
-type_spec : T_VOID
-          | T_INT
-          | T_FLOAT
-          | T_BOOL
-          | T_STRING
-;
+variable_assignment: NAME EQ expression
+                   ;
 
-parameters_exp : parameters_exp ',' parameter_exp
-               | parameter_exp
-;
+variable_declaration: type_spec NAME EQ expression
+                    | type_spec NAME
+                    ;
 
-parameter_exp : expression
-;
+type_spec: T_VOID
+         | T_INT
+         | T_FLOAT
+         | T_BOOL
+         | T_STRING
+         ;
 
 %%
 
@@ -191,13 +189,18 @@ void yyerror ( char *s )
 int pmain() {
 
     read_history(HISTORYFILE);
-    line_read = readline("Parser> ");
-    if (line_read && *line_read) add_history(line_read);
-    write_history(HISTORYFILE);
+    while(1) {
+        line_read = readline("Parser> ");
+        if ((!line_read)||(!*line_read)) break;
+        add_history(line_read);
+        write_history(HISTORYFILE);
 
-    YY_BUFFER_STATE buffer = yy_scan_string(line_read);
-    yypush_buffer_state(buffer);
-    yyparse();
-    yy_delete_buffer(buffer);
+        printf("line_read: '%s'\n", line_read);
+
+        YY_BUFFER_STATE buffer = yy_scan_string(line_read);
+        yypush_buffer_state(buffer);
+        yyparse();
+        yy_delete_buffer(buffer);
+    }
     return 0;
 }
