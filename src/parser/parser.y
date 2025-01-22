@@ -1,6 +1,8 @@
 %{
     // #include "../lexer.tab.h"
     #include <stdio.h>
+
+    #include "../ast.h"
     
     extern int yylex(void);
     extern int yyparse();
@@ -14,10 +16,19 @@
 
 %start program
 
+/* %parse-param { AST *ast }
+
+%union {
+    int val;
+    struct AST *ast;
+}
+
+
+%type <ast> program */
+
 %%
 
-program: %empty
-       | program_block
+program: program_block
        ;
 
 program_block : program_block glob_variable
