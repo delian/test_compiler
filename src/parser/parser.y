@@ -43,7 +43,6 @@ program_block : program_block glob_variable
               | glob_include
               ;
 
-
 glob_include : INCLUDE NAME
              ;
 

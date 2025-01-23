@@ -12,8 +12,8 @@
 
 [ \t\n]                     ;
 #.*                         ; // Ignore a comment
-[0-9]+                      { yylval = atoi(yytext); return INTEGER; }
 [0-9]+\.[0-9]*              { yylval = atof(yytext); return FLOAT; }
+[0-9]+                      { yylval = atoi(yytext); return INTEGER; }
 "+"                         { return PLUS; }
 "-"                         { return MINUS; }
 "*"                         { return TIMES; }
@@ -68,9 +68,3 @@ include                     { return INCLUDE; }
                             }
 
 %%
-
-int ymain() {
-    printf("Lexer> ");
-    yylex();
-    return 0;
-}

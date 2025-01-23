@@ -20,45 +20,18 @@ conan_cmake_configure(REQUIRES
                       llvm-core/13.0.0
                       readline/8.2
                       GENERATORS CMakeDeps)
-
 conan_cmake_autodetect(settings)
-
 conan_cmake_install(PATH_OR_REFERENCE .
                     BUILD missing
                     REMOTE conancenter
                     PROFILE ${CONAN_HOST_PROFILE}
                     SETTINGS ${settings})
 
+
+add_subdirectory(src/parser)
+
 find_package(LLVM REQUIRED)
-
-# find_path(Readline_ROOT_DIR
-#     NAMES include/readline/readline.h
-# )
-# find_path(Readline_INCLUDE_DIR
-#     NAMES readline/readline.h
-#     HINTS ${Readline_ROOT_DIR}/include
-# )
-find_library(Readline_LIBRARY
-    NAMES readline
-    HINTS ${Readline_ROOT_DIR}/lib ${Readline_ROOT_DIR}/lib64
-    REQUIRED
-)
-
-
-find_package(BISON REQUIRED)
-bison_target(parser src/parser/parser.y ${CMAKE_SOURCE_DIR}/src/parser/temp/bison_parser.c 
-             COMPILE_FLAGS -Wcounterexamples
-             VERBOSE
-            )
-
-find_package(FLEX REQUIRED)
-flex_target(lexer src/parser/lexer.l ${CMAKE_SOURCE_DIR}/src/parser/temp/flex_lexer.c)
-
-
-add_flex_bison_dependency(lexer parser)
-
-add_library(parser ${FLEX_lexer_OUTPUTS} ${BISON_parser_OUTPUTS})
 add_executable(${PROJECT_NAME} src/main.c)
 
-target_link_libraries(${PROJECT_NAME} parser LLVM ${Readline_LIBRARY})
+target_link_libraries(${PROJECT_NAME} parser ${Readline_LIBRARY})
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
