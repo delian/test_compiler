@@ -1,5 +1,15 @@
 cmake_minimum_required(VERSION 3.15)
 
+conan_cmake_configure(REQUIRES
+                      readline/8.2
+                      GENERATORS CMakeDeps)
+
+conan_cmake_install(PATH_OR_REFERENCE .
+                    BUILD missing
+                    REMOTE conancenter
+                    PROFILE ${CONAN_HOST_PROFILE}
+                    SETTINGS ${settings})
+
 find_library(Readline_LIBRARY
     NAMES readline
     HINTS ${Readline_ROOT_DIR}/lib ${Readline_ROOT_DIR}/lib64

@@ -15,12 +15,10 @@ endif()
 
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
-
+conan_cmake_autodetect(settings)
 conan_cmake_configure(REQUIRES
                       llvm-core/13.0.0
-                      readline/8.2
                       GENERATORS CMakeDeps)
-conan_cmake_autodetect(settings)
 conan_cmake_install(PATH_OR_REFERENCE .
                     BUILD missing
                     REMOTE conancenter
