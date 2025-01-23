@@ -21,11 +21,6 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 conan_cmake_configure(REQUIRES
                       llvm-core/13.0.0
-                      readline/8.2
-                      # editline/3.1
-                      # zlib/1.3.1
-                      # libxml2/2.12.5
-                      # z3/4.13.0
                       GENERATORS CMakeDeps)
 conan_cmake_autodetect(settings)
 conan_cmake_install(PATH_OR_REFERENCE .
@@ -36,15 +31,9 @@ conan_cmake_install(PATH_OR_REFERENCE .
 
 add_subdirectory(src/parser)
 
-# find_package(LLVM REQUIRED
-#   CONFIG
-#   PATHS ${CMAKE_CURRENT_BINARY_DIR}
-# )
-
-# find_package(readline REQUIRED)
+find_package(LLVM REQUIRED)
 
 add_executable(${PROJECT_NAME} src/main.c)
 
-target_link_libraries(${PROJECT_NAME} parser)
-target_include_directories(${PROJECT_NAME} PUBLIC ${readline_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} parser llvm-core::llvm-core)
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
