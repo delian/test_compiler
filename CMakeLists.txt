@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.15)
 project(ply C)
 
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR})
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_BINARY_DIR})
+set(CMAKE_VERBOSE_MAKEFILE 1)
+
+
 set(CMAKE_BUILD_TYPE Release)
 set(CONAN_HOST_PROFILE default)
 set(BUILD_SHARED_LIBS OFF)
@@ -8,28 +13,38 @@ set(BUILD_SHARED_LIBS OFF)
 
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
   message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
-  file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.0/conan.cmake"
+  file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
                 "${CMAKE_BINARY_DIR}/conan.cmake"
                 TLS_VERIFY ON)
 endif()
-
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
-conan_cmake_autodetect(settings)
 conan_cmake_configure(REQUIRES
                       llvm-core/13.0.0
+                      readline/8.2
+                      # editline/3.1
+                      # zlib/1.3.1
+                      # libxml2/2.12.5
+                      # z3/4.13.0
                       GENERATORS CMakeDeps)
+conan_cmake_autodetect(settings)
 conan_cmake_install(PATH_OR_REFERENCE .
                     BUILD missing
                     REMOTE conancenter
-                    PROFILE ${CONAN_HOST_PROFILE}
                     SETTINGS ${settings})
 
 
 add_subdirectory(src/parser)
 
-find_package(LLVM REQUIRED)
+# find_package(LLVM REQUIRED
+#   CONFIG
+#   PATHS ${CMAKE_CURRENT_BINARY_DIR}
+# )
+
+# find_package(readline REQUIRED)
+
 add_executable(${PROJECT_NAME} src/main.c)
 
-target_link_libraries(${PROJECT_NAME} parser ${Readline_LIBRARY})
+target_link_libraries(${PROJECT_NAME} parser)
+target_include_directories(${PROJECT_NAME} PUBLIC ${readline_INCLUDE_DIRS})
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)

@@ -1,4 +1,8 @@
 cmake_minimum_required(VERSION 3.15)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR})
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_BINARY_DIR})
+
+set(CMAKE_VERBOSE_MAKEFILE 1)
 
 conan_cmake_configure(REQUIRES
                       readline/8.2
@@ -7,15 +11,22 @@ conan_cmake_configure(REQUIRES
 conan_cmake_install(PATH_OR_REFERENCE .
                     BUILD missing
                     REMOTE conancenter
-                    PROFILE ${CONAN_HOST_PROFILE}
                     SETTINGS ${settings})
 
-find_library(Readline_LIBRARY
-    NAMES readline
-    HINTS ${Readline_ROOT_DIR}/lib ${Readline_ROOT_DIR}/lib64
-    REQUIRED
-)
+# find_library(Readline_LIBRARY
+#     NAMES readline
+#     CONFIG
+#     PATHS ${CMAKE_BINARY_DIR}
+#     REQUIRED
+# )
 
+
+# find_package(readline REQUIRED
+#     CONFIG
+#     PATHS ${CMAKE_CURRENT_BINARY_DIR}
+# )
+
+find_package(readline REQUIRED)
 
 find_package(BISON REQUIRED)
 bison_target(parser parser.y ${CMAKE_CURRENT_SOURCE_DIR}/temp/bison_parser.c 
@@ -28,4 +39,6 @@ flex_target(lexer lexer.l ${CMAKE_CURRENT_SOURCE_DIR}/temp/flex_lexer.c)
 
 add_flex_bison_dependency(lexer parser)
 
-add_library(parser ${FLEX_lexer_OUTPUTS} ${BISON_parser_OUTPUTS})
+# target_link_libraries(parser PRIVATE readline::readline)
+
+add_library(parser ${FLEX_lexer_OUTPUTS} ${BISON_parser_OUTPUTS} ${readline_INCLUDE_DIRS})
