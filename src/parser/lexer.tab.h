@@ -1,79 +1,17 @@
-// enum Token
-// {
-//     AND,
-//     OR,
-//     NOT,
-//     XOR,
-//     NAND,
-//     NOR,
-//     XNOR,
-//     IF,
-//     THEN,
-//     ELSE,
-//     T_INT,
-//     T_BOOL,
-//     T_VOID,
-//     T_STRING,
-//     T_CHAR,
-//     T_FLOAT,
-//     T_DOUBLE,
-//     T_LONG,
-//     T_SHORT,
-//     T_UNSIGNED,
-//     T_SIGNED,
-//     TRUE,
-//     FALSE,
-//     WHILE,
-//     RETURN,
-//     BREAK,
-//     CONTINUE,
-//     FOR,
-//     DECLARE,
-//     INCLUDE,
-//     INTEGER,
-//     FLOAT,
-//     PLUS,
-//     MINUS,
-//     TIMES,
-//     DIVIDE,
-//     MOD,
-//     ASSIGN,
-//     EQUAL,
-//     NOTEQUAL,
-//     LESSTHAN,
-//     GREATERTHAN,
-//     LESSEQUAL,
-//     GREATEREQUAL,
-//     LPAREN,
-//     RPAREN,
-//     LBRACE,
-//     RBRACE,
-//     LBRACKET,
-//     RBRACKET,
-//     SEMICOLON,
-//     COMMA,
-//     COLON,
-//     DOT,
-//     ARROW,
-//     IDENTIFIER,
-//     MODULO,
-//     STRING,
-//     NAME,
-//     TILDE,
-//     LE,
-//     GE,
-//     EQ,
-//     LT,
-//     GT,
-//     NE,
-//     CARET,
-//     DOLLAR
-// };
+#ifndef __LEXER_TAB_H__
+#define __LEXER_TAB_H__
 
-extern int yylval;
+union YYLVAL
+{
+    int ival;
+    double fval;
+    char *sval;
+};
 
-// int yylex();
-// void yyerror(char *s);
-// int yyparse();
+extern union YYLVAL yylval;
 
 extern int ymain();
+
+#define YYSTYPE union YYLVAL
+
+#endif

@@ -12,8 +12,8 @@
 
 [ \t\n]                     ;
 #.*                         ; // Ignore a comment
-[0-9]+\.[0-9]*              { yylval = atof(yytext); return FLOAT; }
-[0-9]+                      { yylval = atoi(yytext); return INTEGER; }
+[0-9]+\.[0-9]*              { yylval.fval = atof(yytext); return FLOAT; }
+[0-9]+                      { yylval.ival = atoi(yytext); return INTEGER; }
 "+"                         { return PLUS; }
 "-"                         { return MINUS; }
 "*"                         { return TIMES; }
@@ -60,7 +60,7 @@ bool                        { return T_BOOL; }
 string                      { return T_STRING; }
 declare                     { return DECLARE; }
 include                     { return INCLUDE; }
-[a-zA-Z_\$][a-zA-Z0-9_\$]*  { yylval = strdup(yytext); return NAME; }
+[a-zA-Z_\$][a-zA-Z0-9_\$]*  { yylval.sval = strdup(yytext); return NAME; }
 
 .                           { 
                                 fprintf(stderr, "Tokenizing error: '%c'\n", *yytext); 

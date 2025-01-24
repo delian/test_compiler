@@ -1,13 +1,15 @@
 %{
-    // #include "../lexer.tab.h"
+    #include "../lexer.tab.h"
     #include <stdio.h>
 
     #include "../ast.h"
     
-    extern int yylex(void);
+    extern int yylex();
     extern int yyparse();
     void yyerror(char *s);
 %}
+
+/* %define api.value.type { YYSTYPE } */
 
 %token INCLUDE NAME LPAREN RPAREN RETURN CONTINUE BREAK WHILE FOR IF 
 %token T_VOID T_INT T_FLOAT T_BOOL T_STRING DECLARE TRUE FALSE FLOAT INTEGER STRING
