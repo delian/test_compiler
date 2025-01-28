@@ -192,8 +192,7 @@ extern void yy_delete_buffer(YY_BUFFER_STATE buffer);
 
 static char *line_read = (char *)NULL;
 
-void yyerror ( char *s )
-{
+void yyerror ( char *s ) {
     printf("ERROR: %s\n", s);
 }
 
