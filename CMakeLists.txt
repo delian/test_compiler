@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 project(ply C)
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR})
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_VERBOSE_MAKEFILE 1)
 
 set(CMAKE_BUILD_TYPE Release)
@@ -10,22 +8,12 @@ set(BUILD_SHARED_LIBS OFF)
 # set(CMAKE_EXE_LINKER_FLAGS "-static")
 
 add_subdirectory(src/conan)
-
-conan_cmake_configure(REQUIRES
-                      llvm-core/13.0.0
-                      GENERATORS CMakeDeps)
-conan_cmake_autodetect(settings)
-conan_cmake_install(PATH_OR_REFERENCE .
-                    BUILD missing
-                    REMOTE conancenter
-                    SETTINGS ${settings})
-
-
 add_subdirectory(src/parser)
+add_subdirectory(src/compiler)
 
 find_package(LLVM REQUIRED)
 
 add_executable(${PROJECT_NAME} src/main.c)
 
-target_link_libraries(${PROJECT_NAME} parser llvm-core::llvm-core)
+target_link_libraries(${PROJECT_NAME} parser compiler)
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
