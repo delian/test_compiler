@@ -8,7 +8,6 @@ set(CMAKE_VERBOSE_MAKEFILE 1)
 conan_cmake_configure(REQUIRES
                       readline/8.2
                       GENERATORS CMakeDeps)
-
 conan_cmake_install(PATH_OR_REFERENCE .
                     BUILD missing
                     REMOTE conancenter

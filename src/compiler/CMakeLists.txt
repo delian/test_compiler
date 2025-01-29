@@ -8,7 +8,6 @@ set(CMAKE_VERBOSE_MAKEFILE 1)
 conan_cmake_configure(REQUIRES
                       llvm-core/13.0.0
                       GENERATORS CMakeDeps)
-conan_cmake_autodetect(settings)
 conan_cmake_install(PATH_OR_REFERENCE .
                     BUILD missing
                     REMOTE conancenter
