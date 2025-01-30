@@ -18,7 +18,7 @@
 
 %start program
 
-/* %parse-param { AST *ast }
+/* %parse-param { AST *ast } */
 
 %union {
     int val;
@@ -26,7 +26,7 @@
 }
 
 
-%type <ast> program */
+/* %type <ast> program */
 
 %%
 
