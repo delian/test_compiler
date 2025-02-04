@@ -32,17 +32,7 @@
 
 %start program
 
-/* %parse-param { AST *ast } */
-
-/* %type <ast> program */
-/* %define api.value.type { struct AST * } */
-
-%type <ast> program_block
-/* %type <ast> glob_variable
-%type <ast> function_declaration
-%type <ast> declare_function
-%type <ast> glob_include */
-
+%type <ast> program_block program
 %type <ast> type_spec variable_declaration variable_assignment parameter_exp
 %type <ast> parameters_exp function_call variable factor_val factor term_modulo term_times term_divide term
 %type <ast> expression_term_minus expression_term_plus expression
@@ -55,9 +45,9 @@
 %%
 
 program: program_block {
+    $$ = $1;
     printf("Program TYPE: %s\n", $1->type);
-}
-       ;
+};
 
 program_block : program_block glob_variable { $$ = $1; $$->children[$$->len++] = $2; }
               | glob_variable { $$ = ast_new("program_block"); $$->children[$$->len++] = $1; }
