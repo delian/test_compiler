@@ -2,11 +2,12 @@
 
 typedef struct AST AST;
 
-struct AST {
+struct AST
+{
     char *type;
-    char *value;
+    void *value;
 
-    int len;  // I am not sure I want this. Keep it just in case
+    int len; // I am not sure I want this. Keep it just in case
     AST *children[10];
 };
 
@@ -22,8 +23,10 @@ extern AST *ast;
 //     return 1;
 // }
 
-AST *ast_new(char *type) {
+AST *ast_new(char *type)
+{
     AST *node = malloc(sizeof(AST));
     node->type = type;
+    node->len = 0;
     return node;
 }
