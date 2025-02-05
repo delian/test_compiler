@@ -1,5 +1,4 @@
 %{
-    #include "../lexer.tab.h"
     #include <stdio.h>
 
     #include "../ast.h"

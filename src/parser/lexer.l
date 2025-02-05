@@ -1,10 +1,7 @@
 %option noyywrap nodefault debug
 
 %{
-#include "../lexer.tab.h"
 #include "../temp/bison_parser.h"
-
-// int yylineno = 0;
 %}
 
 
