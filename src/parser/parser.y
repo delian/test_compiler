@@ -47,21 +47,21 @@ program: program_block {
 };
 
 program_block: program_block glob_variable { $$ = $1; ast_add($$, 1, $2); }
-             | glob_variable { $$ = ast_new_add("program_block", 1, $1); }
+             | glob_variable { $$ = ast_new("program_block"); ast_add($$, 1, $1); }
              | program_block function_declaration { $$ = $1; ast_add($$, 1, $2); }
-             | function_declaration { $$ = ast_new_add("program_block", 1, $1); }
+             | function_declaration { $$ = ast_new("program_block"); ast_add($$, 1, $1); }
              | program_block SEMICOLON { $$ = $1; }
              | SEMICOLON {} // Empty statement
              | program_block declare_function { $$ = $1; ast_add($$, 1, $2); }
-             | declare_function { $$ = ast_new_add("program_block", 1, $1); }
+             | declare_function { $$ = ast_new("program_block"); ast_add($$, 1, $1); }
              | program_block glob_include { $$ = $1; ast_add($$, 1, $2); }
-             | glob_include { $$ = ast_new_add("program_block", 1, $1); };
+             | glob_include { $$ = ast_new("program_block"); ast_add($$, 1, $1); };
 
 glob_include: INCLUDE NAME { $$ = ast_new("glob_include"); $$->value = $2; }; // This have to be implemented in the parser and skipping the AST itself
 
-glob_variable: variable_declaration SEMICOLON { $$ = ast_new_add("glob_variable", 1, $1); };
+glob_variable: variable_declaration SEMICOLON { $$ = ast_new("glob_variable"); ast_add($$, 1, $1); };
 
-declare_function: DECLARE type_spec NAME LPAREN parameters RPAREN { $$ = ast_new_add("declare_function", 2, $2, $5); $$->value = $3; }
+declare_function: DECLARE type_spec NAME LPAREN parameters RPAREN { $$ = ast_new("declare_function"); ast_add($$, 2, $2, $5); $$->value = $3; }
                 | DECLARE type_spec NAME LPAREN RPAREN { $$ = ast_new("declare_function_noparm"); $$->value = $3; ast_add($$, 1, $2); };
 
 function_declaration: type_spec NAME LPAREN parameters RPAREN block { $$ = ast_new("function_declaration"); $$->value = $2; ast_add($$, 3, $1, $4, $6); }
