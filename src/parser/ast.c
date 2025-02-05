@@ -1,12 +1,55 @@
 #include "ast.h"
 #include <stdio.h>
+#include <stdarg.h>
 
 AST *ast_new(char *type)
 {
     AST *node = malloc(sizeof(AST));
+    node->child = NULL;
     node->type = type;
     node->len = 0;
     return node;
+}
+
+void ast_add(AST *node, int n, ...)
+{
+    va_list args;
+
+    node->child = realloc(node->child, (node->len + n) * sizeof(AST *));
+    int total = node->len + n;
+
+    for (va_start(args, n); node->len < total; node->len++)
+    {
+        AST *child = va_arg(args, AST *);
+        if (child == NULL)
+            continue;
+        // printf("node %s childlen %d < %d\n", node->type, node->len, total);
+        node->child[node->len] = child;
+    }
+
+    va_end(args);
+}
+
+AST *ast_new_add(char *type, int n, ...)
+{
+    va_list args;
+
+    AST *new_node = ast_new(type);
+    va_start(args, n);
+    ast_add(new_node, n, args);
+    va_end(args);
+
+    return new_node;
+}
+
+void ast_free(AST *node)
+{
+    for (int i = 0; i < node->len; i++)
+    {
+        ast_free(node->child[i]);
+    }
+    free(node->child);
+    free(node);
 }
 
 void ast_print_depth(AST *node, int depth)
@@ -19,7 +62,7 @@ void ast_print_depth(AST *node, int depth)
     printf("\n");
     for (int i = 0; i < node->len; i++)
     {
-        ast_print_depth(node->children[i], depth + 1);
+        ast_print_depth(node->child[i], depth + 1);
     }
 }
 
