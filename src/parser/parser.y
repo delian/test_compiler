@@ -45,8 +45,9 @@
 %%
 
 program: program_block {
-    $$ = $1;
-    printf("Program TYPE: %s\n", $1->type);
+    // $$ = $1;
+    ast = $1;
+    // printf("Program TYPE: %s\n", $1->type);
 };
 
 program_block : program_block glob_variable { $$ = $1; $$->children[$$->len++] = $2; }
@@ -219,6 +220,9 @@ int pmain() {
         yypush_buffer_state(buffer);
         yyparse();
         yy_delete_buffer(buffer);
+
+        printf("\n");
+        ast_print(ast);
     }
     return 0;
 }

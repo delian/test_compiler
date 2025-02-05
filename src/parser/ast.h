@@ -1,3 +1,6 @@
+#ifndef AST_H
+#define AST_H
+
 #include <stdlib.h>
 
 typedef struct AST AST;
@@ -12,21 +15,8 @@ struct AST
 };
 
 extern AST *ast;
+extern AST *ast_new(char *type);
 
-// int ast_add_child(AST *parent, AST *child) {
-//     for (int i = 0; i < 10; i++) {
-//         if (parent->children[i] == NULL) {
-//             parent->children[i] = child;
-//             return 0;
-//         }
-//     }
-//     return 1;
-// }
+extern void ast_print(AST *node);
 
-AST *ast_new(char *type)
-{
-    AST *node = malloc(sizeof(AST));
-    node->type = type;
-    node->len = 0;
-    return node;
-}
+#endif
