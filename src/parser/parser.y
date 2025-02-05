@@ -67,6 +67,8 @@ declare_function: DECLARE type_spec NAME LPAREN parameters RPAREN { $$ = ast_new
 function_declaration: type_spec NAME LPAREN parameters RPAREN block { $$ = ast_new("function_declaration"); $$->value = $2; ast_add($$, 3, $1, $4, $6); }
                     | type_spec NAME LPAREN RPAREN block { $$ = ast_new("function_declaration_noparm"); $$->value = $2; ast_add($$, 2, $1, $5); };
 
+mySemicolon: ";" | %empty;
+
 parameters: parameters COMMA parameter { $$ = $1; ast_add($$, 1, $3); }
           | parameter { $$ = ast_new("parameters"); ast_add($$, 1, $1); };
 
@@ -216,8 +218,8 @@ int pmain() {
 
         printf("\n");
         ast_print(ast);
-        /* ast_free(ast);
-        ast = NULL; */
+        ast_free(ast);
+        ast = NULL;
     }
     return 0;
 }
