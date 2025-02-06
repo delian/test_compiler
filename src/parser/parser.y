@@ -67,8 +67,6 @@ declare_function: DECLARE type_spec NAME LPAREN parameters RPAREN { $$ = ast_new
 function_declaration: type_spec NAME LPAREN parameters RPAREN block { $$ = ast_new("function_declaration"); $$->value = $2; ast_add($$, 3, $1, $4, $6); }
                     | type_spec NAME LPAREN RPAREN block { $$ = ast_new("function_declaration_noparm"); $$->value = $2; ast_add($$, 2, $1, $5); };
 
-mySemicolon: ";" | %empty;
-
 parameters: parameters COMMA parameter { $$ = $1; ast_add($$, 1, $3); }
           | parameter { $$ = ast_new("parameters"); ast_add($$, 1, $1); };
 
@@ -186,6 +184,8 @@ type_spec: T_VOID { $$ = ast_new("void"); }
 #include <readline/history.h>
 
 #define HISTORYFILE ".ply_history"
+
+AST *ast;
 
 typedef struct yy_buffer_state * YY_BUFFER_STATE;
 extern int yyparse();

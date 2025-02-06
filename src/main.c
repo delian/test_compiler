@@ -6,8 +6,6 @@
 
 extern int pmain(void);
 
-AST *ast;
-
 int main(void)
 {
     pmain();
