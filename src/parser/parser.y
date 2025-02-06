@@ -218,8 +218,8 @@ int pmain() {
 
         printf("\n");
         ast_print(ast);
-        ast_free(ast);
-        ast = NULL;
+        /* ast_free(ast);
+        ast = NULL; */
     }
     return 0;
 }
