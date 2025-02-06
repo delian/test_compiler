@@ -3,13 +3,18 @@
 {
 	"name": "Ubuntu",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/base:jammy",
+	// "image": "mcr.microsoft.com/devcontainers/base:jammy",
+	"build": {
+		"dockerfile": "Dockerfile",
+		// Update 'VARIANT' to pick a non-default Dockerfile variant. More info: https://aka.ms/vscode-remote/containers/image-build
+		// "args": { "VARIANT": "buster" }
+	},
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo apt update && sudo apt upgrade -y && sudo apt install -y cmake ninja-build python3-pip build-essential bison flex gdb && sudo pip install conan",
+	// "postCreateCommand": "sudo apt update && sudo apt upgrade -y && sudo apt install -y cmake ninja-build python3-pip build-essential bison flex gdb && sudo pip install conan",
 	"customizations": {
 		"vscode": {
 			"extensions": [
