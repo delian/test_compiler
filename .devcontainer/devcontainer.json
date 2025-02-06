@@ -48,7 +48,9 @@
 				"hediet.realtime-debugging",
 				"Gruntfuggly.todo-tree",
 				"ms-vscode.vscode-commander",
-				"daohong-emilio.yash"
+				"daohong-emilio.yash",
+				"ms-azuretools.vscode-docker",
+				"esbenp.prettier-vscode"
 			]
 		}
 	},
