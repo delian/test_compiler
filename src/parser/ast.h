@@ -9,6 +9,7 @@ struct AST
 {
     char *type;
     void *value;
+    char *value_str;
     int len;
     AST **child;
 };

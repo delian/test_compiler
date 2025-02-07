@@ -41,136 +41,134 @@
 %%
 
 program: program_block {
-    // $$ = $1;
     ast = $1;
-    // printf("Program TYPE: %s\n", $1->type);
 };
 
 program_block: program_block glob_variable { $$ = $1; ast_add($$, 1, $2); }
-             | glob_variable { $$ = ast_new("program_block"); ast_add($$, 1, $1); }
+             | glob_variable { $$ = ast_new_add("program_block", 1, $1); }
              | program_block function_declaration { $$ = $1; ast_add($$, 1, $2); }
-             | function_declaration { $$ = ast_new("program_block"); ast_add($$, 1, $1); }
+             | function_declaration { $$ = ast_new_add("program_block", 1, $1); }
              | program_block SEMICOLON { $$ = $1; }
              | SEMICOLON {} // Empty statement
              | program_block declare_function { $$ = $1; ast_add($$, 1, $2); }
-             | declare_function { $$ = ast_new("program_block"); ast_add($$, 1, $1); }
+             | declare_function { $$ = ast_new_add("program_block", 1, $1); }
              | program_block glob_include { $$ = $1; ast_add($$, 1, $2); }
-             | glob_include { $$ = ast_new("program_block"); ast_add($$, 1, $1); };
+             | glob_include { $$ = ast_new_add("program_block", 1, $1); };
 
-glob_include: INCLUDE NAME { $$ = ast_new("glob_include"); $$->value = $2; }; // This have to be implemented in the parser and skipping the AST itself
+glob_include: INCLUDE NAME { $$ = ast_new("glob_include"); $$->value = $2; $$->value_str = $2; }; // This have to be implemented in the parser and skipping the AST itself
 
-glob_variable: variable_declaration SEMICOLON { $$ = ast_new("glob_variable"); ast_add($$, 1, $1); };
+glob_variable: variable_declaration SEMICOLON { $$ = ast_new_add("glob_variable", 1, $1); };
 
-declare_function: DECLARE type_spec NAME LPAREN parameters RPAREN { $$ = ast_new("declare_function"); ast_add($$, 2, $2, $5); $$->value = $3; }
-                | DECLARE type_spec NAME LPAREN RPAREN { $$ = ast_new("declare_function_noparm"); $$->value = $3; ast_add($$, 1, $2); };
+declare_function: DECLARE type_spec NAME LPAREN parameters RPAREN { $$ = ast_new_add("declare_function", 2, $2, $5); $$->value = $3; $$->value_str = $3; }
+                | DECLARE type_spec NAME LPAREN RPAREN { $$ = ast_new_add("declare_function_noparm", 1, $2); $$->value = $3; $$->value_str = $3; };
 
-function_declaration: type_spec NAME LPAREN parameters RPAREN block { $$ = ast_new("function_declaration"); $$->value = $2; ast_add($$, 3, $1, $4, $6); }
-                    | type_spec NAME LPAREN RPAREN block { $$ = ast_new("function_declaration_noparm"); $$->value = $2; ast_add($$, 2, $1, $5); };
+function_declaration: type_spec NAME LPAREN parameters RPAREN block { $$ = ast_new_add("function_declaration", 3, $1, $4, $6); $$->value = $2; $$->value_str = $2; }
+                    | type_spec NAME LPAREN RPAREN block { $$ = ast_new_add("function_declaration_noparm", 2, $1, $5); $$->value = $2; $$->value_str = $2; };
 
 parameters: parameters COMMA parameter { $$ = $1; ast_add($$, 1, $3); }
-          | parameter { $$ = ast_new("parameters"); ast_add($$, 1, $1); };
+          | parameter { $$ = ast_new_add("parameters", 1, $1); };
 
-parameter: type_spec NAME { $$ = ast_new("parameter"); ast_add($$, 1, $1); $$->value = $2; };
+parameter: type_spec NAME { $$ = ast_new_add("parameter", 1, $1); $$->value = $2; $$->value_str = $2; };
 
-block: statement { $$ = ast_new("block_statement"); ast_add($$, 1, $1); }
-     | LBRACE statements RBRACE { $$ = ast_new("block_statements"); ast_add($$, 1, $2); }
+block: statement { $$ = ast_new_add("block_statement", 1, $1); }
+     | LBRACE statements RBRACE { $$ = ast_new_add("block_statements", 1, $2); }
      | LBRACE RBRACE { $$ = ast_new("block_empty"); };
 
-statements: statement { $$ = ast_new("statements"); ast_add($$, 1, $1); }
+statements: statement { $$ = ast_new_add("statements", 1, $1); }
           | statements SEMICOLON statement { $$ = $1; ast_add($$, 1, $3); };
 
-statement: bool_expression { $$ = ast_new("statement"); ast_add($$, 1, $1); }
-         | variable_declaration { $$ = ast_new("statement"); ast_add($$, 1, $1); }
-         | return_statement { $$ = ast_new("statement"); ast_add($$, 1, $1); }
-         | continue_statement { $$ = ast_new("statement"); ast_add($$, 1, $1); }
-         | break_statement { $$ = ast_new("statement"); ast_add($$, 1, $1); }
-         | while_statement { $$ = ast_new("statement"); ast_add($$, 1, $1); }
-         | for_statement { $$ = ast_new("statement"); ast_add($$, 1, $1); }
-         | variable_assignment { $$ = ast_new("statement"); ast_add($$, 1, $1); }
-         | if_statement { $$ = ast_new("statement"); ast_add($$, 1, $1); };
+statement: bool_expression { $$ = ast_new_add("statement", 1, $1); }
+         | variable_declaration { $$ = ast_new_add("statement", 1, $1); }
+         | return_statement { $$ = ast_new_add("statement", 1, $1); }
+         | continue_statement { $$ = ast_new_add("statement", 1, $1); }
+         | break_statement { $$ = ast_new_add("statement", 1, $1); }
+         | while_statement { $$ = ast_new_add("statement", 1, $1); }
+         | for_statement { $$ = ast_new_add("statement", 1, $1); }
+         | variable_assignment { $$ = ast_new_add("statement", 1, $1); }
+         | if_statement { $$ = ast_new_add("statement", 1, $1); };
 
-if_statement: IF LPAREN bool_expression RPAREN block { $$ = ast_new("if_statement"); ast_add($$, 2, $3, $5); };
+if_statement: IF LPAREN bool_expression RPAREN block { $$ = ast_new_add("if_statement", 2, $3, $5); };
 
-for_statement: FOR LPAREN statement SEMICOLON statement SEMICOLON statement RPAREN block { $$ = ast_new("for_statement_3"); ast_add($$, 4, $3, $5, $7, $9); }
-             | FOR LPAREN RPAREN block { $$ = ast_new("for_statement_0"); ast_add($$, 1, $4); }
-             | FOR LPAREN statement RPAREN block { $$ = ast_new("for_statement_1"); ast_add($$, 2, $3, $5); }
-             | FOR LPAREN statement SEMICOLON statement RPAREN block { $$ = ast_new("for_statement_2"); ast_add($$, 3, $3, $5, $7); };
+for_statement: FOR LPAREN statement SEMICOLON statement SEMICOLON statement RPAREN block { $$ = ast_new_add("for_statement_3", 4, $3, $5, $7, $9); }
+             | FOR LPAREN RPAREN block { $$ = ast_new_add("for_statement_0", 1, $4); }
+             | FOR LPAREN statement RPAREN block { $$ = ast_new_add("for_statement_1", 2, $3, $5); }
+             | FOR LPAREN statement SEMICOLON statement RPAREN block { $$ = ast_new_add("for_statement_2", 3, $3, $5, $7); };
 
-return_statement: RETURN expression { $$ = ast_new("return_statement_expression"); ast_add($$, 1, $2); }
+return_statement: RETURN expression { $$ = ast_new_add("return_statement_expression", 1, $2); }
                 | RETURN { $$ = ast_new("return_statement"); };
 
 continue_statement: CONTINUE { $$ = ast_new("continue_statement"); }
-                  | CONTINUE expression { $$ = ast_new("continue_statement_expression"); ast_add($$, 1, $2); };
+                  | CONTINUE expression { $$ = ast_new_add("continue_statement_expression", 1, $2); };
 
 break_statement: BREAK { $$ = ast_new("break_statement"); }
-               | BREAK expression { $$ = ast_new("break_statement_expression"); ast_add($$, 1, $2); };
+               | BREAK expression { $$ = ast_new_add("break_statement_expression", 1, $2); };
 
-while_statement: WHILE LPAREN bool_expression RPAREN block { $$ = ast_new("while_statement"); ast_add($$, 2, $3, $5); };
+while_statement: WHILE LPAREN bool_expression RPAREN block { $$ = ast_new_add("while_statement", 2, $3, $5); };
 
-bool_expression: bool_exp_xor { $$ = ast_new("bool_expression"); ast_add($$, 1, $1); }
-               | bool_exp_or { $$ = ast_new("bool_expression"); ast_add($$, 1, $1); }
-               | bool_exp_and { $$ = ast_new("bool_expression"); ast_add($$, 1, $1); }
-               | bool_term { $$ = ast_new("bool_expression"); ast_add($$, 1, $1); };
+bool_expression: bool_exp_xor { $$ = ast_new_add("bool_expression", 1, $1); }
+               | bool_exp_or { $$ = ast_new_add("bool_expression", 1, $1); }
+               | bool_exp_and { $$ = ast_new_add("bool_expression", 1, $1); }
+               | bool_term { $$ = ast_new_add("bool_expression", 1, $1); };
 
-bool_exp_xor: bool_expression XOR bool_term { $$ = ast_new("bool_exp_xor"); ast_add($$, 2, $1, $3); };
-bool_exp_or: bool_expression OR bool_term { $$ = ast_new("bool_exp_or"); ast_add($$, 2, $1, $3); };
-bool_exp_and: bool_expression AND bool_term { $$ = ast_new("bool_exp_and"); ast_add($$, 2, $1, $3); };
+bool_exp_xor: bool_expression XOR bool_term { $$ = ast_new_add("bool_exp_xor", 2, $1, $3); };
+bool_exp_or: bool_expression OR bool_term { $$ = ast_new_add("bool_exp_or", 2, $1, $3); };
+bool_exp_and: bool_expression AND bool_term { $$ = ast_new_add("bool_exp_and", 2, $1, $3); };
 
-bool_term: bool_factor { $$ = ast_new("bool_term"); ast_add($$, 1, $1); }
-         | bool_term_tilde { $$ = ast_new("bool_term"); ast_add($$, 1, $1); }
-         | bool_term_not { $$ = ast_new("bool_term"); ast_add($$, 1, $1); };
+bool_term: bool_factor { $$ = ast_new_add("bool_term", 1, $1); }
+         | bool_term_tilde { $$ = ast_new_add("bool_term", 1, $1); }
+         | bool_term_not { $$ = ast_new_add("bool_term", 1, $1); };
 
-bool_term_not: NOT bool_factor { $$ = ast_new("bool_term_not"); ast_add($$, 1, $2); };
-bool_term_tilde: TILDE bool_factor { $$ = ast_new("bool_term_tilde"); ast_add($$, 1, $2); };
+bool_term_not: NOT bool_factor { $$ = ast_new_add("bool_term_not", 1, $2); };
+bool_term_tilde: TILDE bool_factor { $$ = ast_new_add("bool_term_tilde", 1, $2); };
 
-bool_factor: bool_true { $$ = ast_new("bool_factor"); ast_add($$, 1, $1); }
-           | bool_false { $$ = ast_new("bool_factor"); ast_add($$, 1, $1); }
-           | expression { $$ = ast_new("bool_factor"); ast_add($$, 1, $1); };
+bool_factor: bool_true { $$ = ast_new_add("bool_factor", 1, $1); }
+           | bool_false { $$ = ast_new_add("bool_factor", 1, $1); }
+           | expression { $$ = ast_new_add("bool_factor", 1, $1); };
 
 
-bool_true: TRUE { $$ = ast_new("bool_true"); $$->value = &(int){1}; };
-bool_false: FALSE { $$ = ast_new("bool_false"); $$->value = &(int){0}; };
+bool_true: TRUE { $$ = ast_new("bool_true"); $$->value = &(int){1}; $$->value_str = "TRUE"; };
+bool_false: FALSE { $$ = ast_new("bool_false"); $$->value = &(int){0}; $$->value_str = "FALSE"; };
 
-expression: expression_term_plus { $$ = ast_new("expression"); ast_add($$, 1, $1); }
-          | expression_term_minus { $$ = ast_new("expression"); ast_add($$, 1, $1); }
-          | term { $$ = ast_new("expression"); ast_add($$, 1, $1); };
+expression: expression_term_plus { $$ = ast_new_add("expression", 1, $1); }
+          | expression_term_minus { $$ = ast_new_add("expression", 1, $1); }
+          | term { $$ = ast_new_add("expression", 1, $1); };
 
-expression_term_plus: expression PLUS term { $$ = ast_new("expression_term_plus"); ast_add($$, 2, $1, $3); };
-expression_term_minus: expression MINUS term { $$ = ast_new("expression_term_minus"); ast_add($$, 2, $1, $3); };
+expression_term_plus: expression PLUS term { $$ = ast_new_add("expression_term_plus", 2, $1, $3); };
+expression_term_minus: expression MINUS term { $$ = ast_new_add("expression_term_minus", 2, $1, $3); };
 
-term: term_times { $$ = ast_new("term"); ast_add($$, 1, $1); }
-    | term_divide { $$ = ast_new("term"); ast_add($$, 1, $1); }
-    | term_modulo { $$ = ast_new("term"); ast_add($$, 1, $1); }
-    | factor { $$ = ast_new("term"); ast_add($$, 1, $1); };
+term: term_times { $$ = ast_new_add("term", 1, $1); }
+    | term_divide { $$ = ast_new_add("term", 1, $1); }
+    | term_modulo { $$ = ast_new_add("term", 1, $1); }
+    | factor { $$ = ast_new_add("term", 1, $1); };
 
-term_times: term TIMES factor { $$ = ast_new("term_times"); ast_add($$, 2, $1, $3); }; 
-term_divide: term DIVIDE factor { $$ = ast_new("term_divide"); ast_add($$, 2, $1, $3); };
-term_modulo: term MODULO factor { $$ = ast_new("term_modulo"); ast_add($$, 2, $1, $3); };
+term_times: term TIMES factor { $$ = ast_new_add("term_times", 2, $1, $3); }; 
+term_divide: term DIVIDE factor { $$ = ast_new_add("term_divide", 2, $1, $3); };
+term_modulo: term MODULO factor { $$ = ast_new_add("term_modulo", 2, $1, $3); };
 
-factor: LPAREN expression RPAREN { $$ = ast_new("factor"); ast_add($$, 1, $2); }
-      | factor_val { $$ = ast_new("factor"); ast_add($$, 1, $1); }
-      | variable { $$ = ast_new("factor"); ast_add($$, 1, $1); }
-      | function_call { $$ = ast_new("factor"); ast_add($$, 1, $1); };
+factor: LPAREN expression RPAREN { $$ = ast_new_add("factor", 1, $2); }
+      | factor_val { $$ = ast_new_add("factor", 1, $1); }
+      | variable { $$ = ast_new_add("factor", 1, $1); }
+      | function_call { $$ = ast_new_add("factor", 1, $1); };
 
-factor_val: INTEGER { $$ = ast_new("factor_val"); $$->value = &(int){$1}; } // Annonymous re-allocation of a value
-      | MINUS INTEGER { $$ = ast_new("factor_val_neg"); $$->value = &(int){$2}; }
-      | FLOAT { $$ = ast_new("factor_val"); $$->value = &(float){$1}; }
-      | MINUS FLOAT { $$ = ast_new("factor_val_neg"); $$->value = &(float){$2}; };
+factor_val: INTEGER { $$ = ast_new("factor_val"); $$->value = &(int){$1}; $$->value_str = "INTEGER";  } // Annonymous re-allocation of a value
+      | MINUS INTEGER { $$ = ast_new("factor_val_neg"); $$->value = &(int){$2}; $$->value_str = "INTEGER"; }
+      | FLOAT { $$ = ast_new("factor_val"); $$->value = &(float){$1}; $$->value_str = "FLOAT"; }
+      | MINUS FLOAT { $$ = ast_new("factor_val_neg"); $$->value = &(float){$2}; $$->value_str = "FLOAT"; };
 
-variable: NAME { $$ = ast_new("variable"); $$->value = $1; };
+variable: NAME { $$ = ast_new("variable"); $$->value = $1; $$->value_str = $1; };
 
-function_call: NAME LPAREN parameters_exp RPAREN { $$ = ast_new("function_call"); $$->value = $1; ast_add($$, 1, $3); }
-             | NAME LPAREN RPAREN { $$ = ast_new("function_call"); $$->value = $1; };
+function_call: NAME LPAREN parameters_exp RPAREN { $$ = ast_new_add("function_call", 1, $3); $$->value = $1; $$->value_str = $1; }
+             | NAME LPAREN RPAREN { $$ = ast_new("function_call"); $$->value = $1; $$->value_str = $1; };
 
 parameters_exp: parameters_exp COMMA parameter_exp { $$ = $1; ast_add($$, 1, $3); }
-              | parameter_exp { $$ = ast_new("parameters_exp"); ast_add($$, 1, $1); };
+              | parameter_exp { $$ = ast_new_add("parameters_exp", 1, $1); };
 
-parameter_exp: expression { $$ = ast_new("parameter_exp"); ast_add($$, 1, $1); };
+parameter_exp: expression { $$ = ast_new_add("parameter_exp", 1, $1); };
 
-variable_assignment: NAME EQ expression { $$ = ast_new("variable_assignment"); $$->value = $1; ast_add($$, 1, $3); };
+variable_assignment: NAME EQ expression { $$ = ast_new_add("variable_assignment", 1, $3); $$->value = $1; $$->value_str = $1; };
 
-variable_declaration: type_spec NAME EQ expression { $$ = ast_new("variable_declaration"); $$->value = $2; ast_add($$, 1, $4); }
-                    | type_spec NAME { $$ = ast_new("variable_declaration"); $$->value = $2; };
+variable_declaration: type_spec NAME EQ expression { $$ = ast_new_add("variable_declaration", 1, $4); $$->value = $2; $$->value_str = $2; }
+                    | type_spec NAME { $$ = ast_new("variable_declaration"); $$->value = $2; $$->value_str = $2; };
 
 type_spec: T_VOID { $$ = ast_new("void"); }
          | T_INT { $$ = ast_new("int"); }
@@ -213,13 +211,17 @@ int pmain() {
 
         YY_BUFFER_STATE buffer = yy_scan_string(line_read);
         yypush_buffer_state(buffer);
-        yyparse();
+        int parse_err = yyparse();
         yy_delete_buffer(buffer);
 
         printf("\n");
-        ast_print(ast);
-        /* ast_free(ast);
-        ast = NULL; */
+        if (parse_err) {
+            printf("Parse error\n");
+        } else {
+            ast_print(ast);
+        }
+        ast_free(ast);
+        ast = NULL;
     }
     return 0;
 }
