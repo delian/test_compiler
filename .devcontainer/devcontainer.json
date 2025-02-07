@@ -9,6 +9,10 @@
 		// Update 'VARIANT' to pick a non-default Dockerfile variant. More info: https://aka.ms/vscode-remote/containers/image-build
 		// "args": { "VARIANT": "buster" }
 	},
+	"runArgs": [
+		"--memory=32g",
+		"--memory-swap=48g"
+	],
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
