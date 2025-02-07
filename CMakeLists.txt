@@ -5,11 +5,12 @@ set(CMAKE_WARN_DEPRECATED 1)
 set(CMAKE_WARN_UNUSED_CLI 1)
 set(CMAKE_VERBOSE_MAKEFILE 1)
 
-set(CMAKE_BUILD_TYPE RelWithDebInfo)
+set(CMAKE_BUILD_TYPE Release)
 # set(BUILD_SHARED_LIBS OFF)
 # set(CMAKE_EXE_LINKER_FLAGS "-static")
 
 add_subdirectory(src/conan)
+
 add_subdirectory(src/parser)
 add_subdirectory(src/compiler)
 

@@ -10,8 +10,8 @@
 		// "args": { "VARIANT": "buster" }
 	},
 	"runArgs": [
-		"--memory=32g",
-		"--memory-swap=48g"
+		"--memory=20gb",
+		"--memory-swap=32gb"
 	],
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
