@@ -80,13 +80,3 @@ void ast_print(AST *node)
 {
     ast_print_depth(node, 0);
 }
-
-char *ssprintf(const char *format, ...)
-{
-    char *str = NULL;
-    va_list args;
-    va_start(args, format);
-    vasprintf(&str, format, args);
-    va_end(args);
-    return str;
-}
