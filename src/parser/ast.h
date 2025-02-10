@@ -1,8 +1,7 @@
 #ifndef AST_H
 #define AST_H
 
-#define _GNU_SOURCE
-#define STDC_WANT_LIB_EXT2
+#define __GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -23,12 +22,7 @@ extern AST *ast_new_add(char *type, int n, ...);
 extern void ast_add(AST *node, int n, ...);
 extern void ast_print(AST *node);
 extern void ast_free(AST *node);
-
-#define ssprintf(...) ({         \
-    char *str = NULL;            \
-    asprintf(&str, __VA_ARGS__); \
-    str;                         \
-})
+extern char *ssprintf(const char *format, ...);
 
 #define value_str(node, ...) (node->value_str = ssprintf(__VA_ARGS__))
 
