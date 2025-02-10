@@ -8,6 +8,8 @@ AST *ast_new(char *type)
     node->child = NULL;
     node->type = type;
     node->len = 0;
+    node->value = NULL;
+    node->value_str = NULL;
     return node;
 }
 
@@ -57,6 +59,7 @@ void ast_free(AST *node)
     {
         ast_free(node->child[i]);
     }
+    free(node->value_str); // Explicit malloc needs to be freed. I won't do this for ->value as it often points to ELF allocated static symbols in memory which are shared constants and not allocated with malloc
     free(node->child);
     free(node);
 }
@@ -65,7 +68,7 @@ void ast_print_depth(AST *node, int depth)
 {
     for (int i = 0; i < depth; i++)
         printf("|  ");
-    printf("Type: '%s' Value: '%s'", node->type, "???" /* node->value_str */);
+    printf("Type: '%s' Value: '%s'", node->type, node->value_str);
     if (node->len > 0)
         printf(" Children (%d):", node->len);
     printf("\n");

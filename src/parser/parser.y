@@ -55,20 +55,20 @@ program_block: program_block glob_variable { $$ = $1; ast_add($$, 1, $2); }
              | program_block glob_include { $$ = $1; ast_add($$, 1, $2); }
              | glob_include { $$ = ast_new_add("program_block", 1, $1); };
 
-glob_include: INCLUDE NAME { $$ = ast_new("glob_include"); $$->value = $2; $$->value_str = $2; }; // This have to be implemented in the parser and skipping the AST itself
+glob_include: INCLUDE NAME { $$ = ast_new("glob_include"); $$->value = $2; value_str($$, "%s", $2); }; // This have to be implemented in the parser and skipping the AST itself
 
 glob_variable: variable_declaration SEMICOLON { $$ = ast_new_add("glob_variable", 1, $1); };
 
-declare_function: DECLARE type_spec NAME LPAREN parameters RPAREN { $$ = ast_new_add("declare_function", 2, $2, $5); $$->value = $3; $$->value_str = $3; }
-                | DECLARE type_spec NAME LPAREN RPAREN { $$ = ast_new_add("declare_function_noparm", 1, $2); $$->value = $3; $$->value_str = $3; };
+declare_function: DECLARE type_spec NAME LPAREN parameters RPAREN { $$ = ast_new_add("declare_function", 2, $2, $5); $$->value = $3; value_str($$, "%s", $3); }
+                | DECLARE type_spec NAME LPAREN RPAREN { $$ = ast_new_add("declare_function_noparm", 1, $2); $$->value = $3; value_str($$, "%s", $3); };
 
-function_declaration: type_spec NAME LPAREN parameters RPAREN block { $$ = ast_new_add("function_declaration", 3, $1, $4, $6); $$->value = $2; $$->value_str = $2; }
-                    | type_spec NAME LPAREN RPAREN block { $$ = ast_new_add("function_declaration_noparm", 2, $1, $5); $$->value = $2; $$->value_str = $2; };
+function_declaration: type_spec NAME LPAREN parameters RPAREN block { $$ = ast_new_add("function_declaration", 3, $1, $4, $6); $$->value = $2; value_str($$, "%s", $2); }
+                    | type_spec NAME LPAREN RPAREN block { $$ = ast_new_add("function_declaration_noparm", 2, $1, $5); $$->value = $2; value_str($$, "%s", $2); };
 
 parameters: parameters COMMA parameter { $$ = $1; ast_add($$, 1, $3); }
           | parameter { $$ = ast_new_add("parameters", 1, $1); };
 
-parameter: type_spec NAME { $$ = ast_new_add("parameter", 1, $1); $$->value = $2; $$->value_str = $2; };
+parameter: type_spec NAME { $$ = ast_new_add("parameter", 1, $1); $$->value = $2; value_str($$, "%s", $2); };
 
 block: statement { $$ = ast_new_add("block_statement", 1, $1); }
      | LBRACE statements RBRACE { $$ = ast_new_add("block_statements", 1, $2); }
@@ -126,8 +126,8 @@ bool_factor: bool_true { $$ = ast_new_add("bool_factor", 1, $1); }
            | expression { $$ = ast_new_add("bool_factor", 1, $1); };
 
 
-bool_true: TRUE { $$ = ast_new("bool_true"); $$->value = &(int){1}; $$->value_str = "TRUE"; };
-bool_false: FALSE { $$ = ast_new("bool_false"); $$->value = &(int){0}; $$->value_str = "FALSE"; };
+bool_true: TRUE { $$ = ast_new("bool_true"); $$->value = &(int){1}; value_str($$,"true (1)"); };
+bool_false: FALSE { $$ = ast_new("bool_false"); $$->value = &(int){0}; value_str($$,"false (0)"); };
 
 expression: expression_term_plus { $$ = ast_new_add("expression", 1, $1); }
           | expression_term_minus { $$ = ast_new_add("expression", 1, $1); }
@@ -150,31 +150,31 @@ factor: LPAREN expression RPAREN { $$ = ast_new_add("factor", 1, $2); }
       | variable { $$ = ast_new_add("factor", 1, $1); }
       | function_call { $$ = ast_new_add("factor", 1, $1); };
 
-factor_val: INTEGER { $$ = ast_new("factor_val"); $$->value = &(int){$1}; $$->value_str = "INTEGER";  } // Annonymous re-allocation of a value
-      | MINUS INTEGER { $$ = ast_new("factor_val_neg"); $$->value = &(int){$2}; $$->value_str = "INTEGER"; }
-      | FLOAT { $$ = ast_new("factor_val"); $$->value = &(float){$1}; $$->value_str = "FLOAT"; }
-      | MINUS FLOAT { $$ = ast_new("factor_val_neg"); $$->value = &(float){$2}; $$->value_str = "FLOAT"; };
+factor_val: INTEGER { $$ = ast_new("factor_val"); $$->value = &(int){$1}; value_str($$, "%d", $1); } // Annonymous re-allocation of a value
+      | MINUS INTEGER { $$ = ast_new("factor_val_neg"); $$->value = &(int){$2}; value_str($$, "%d", $2); }
+      | FLOAT { $$ = ast_new("factor_val"); $$->value = &(float){$1}; value_str($$, "%f", $1); }
+      | MINUS FLOAT { $$ = ast_new("factor_val_neg"); $$->value = &(float){$2}; value_str($$, "%f", $2); };
 
-variable: NAME { $$ = ast_new("variable"); $$->value = $1; $$->value_str = $1; };
+variable: NAME { $$ = ast_new("variable"); $$->value = $1; value_str($$, "%s", $1); };
 
-function_call: NAME LPAREN parameters_exp RPAREN { $$ = ast_new_add("function_call", 1, $3); $$->value = $1; $$->value_str = $1; }
-             | NAME LPAREN RPAREN { $$ = ast_new("function_call"); $$->value = $1; $$->value_str = $1; };
+function_call: NAME LPAREN parameters_exp RPAREN { $$ = ast_new_add("function_call", 1, $3); $$->value = $1; value_str($$, "%s", $1); }
+             | NAME LPAREN RPAREN { $$ = ast_new("function_call"); $$->value = $1; value_str($$, "%s", $1); };
 
 parameters_exp: parameters_exp COMMA parameter_exp { $$ = $1; ast_add($$, 1, $3); }
               | parameter_exp { $$ = ast_new_add("parameters_exp", 1, $1); };
 
 parameter_exp: expression { $$ = ast_new_add("parameter_exp", 1, $1); };
 
-variable_assignment: NAME EQ expression { $$ = ast_new_add("variable_assignment", 1, $3); $$->value = $1; $$->value_str = $1; };
+variable_assignment: NAME EQ expression { $$ = ast_new_add("variable_assignment", 1, $3); $$->value = $1; value_str($$, "%s", $1); };
 
-variable_declaration: type_spec NAME EQ expression { $$ = ast_new_add("variable_declaration", 1, $4); $$->value = $2; $$->value_str = $2; }
-                    | type_spec NAME { $$ = ast_new("variable_declaration"); $$->value = $2; $$->value_str = $2; };
+variable_declaration: type_spec NAME EQ expression { $$ = ast_new_add("variable_declaration", 1, $4); $$->value = $2; value_str($$, "%s", $2); }
+                    | type_spec NAME { $$ = ast_new("variable_declaration"); $$->value = $2; value_str($$, "%s", $2); };
 
-type_spec: T_VOID { $$ = ast_new("void"); }
-         | T_INT { $$ = ast_new("int"); }
-         | T_FLOAT { $$ = ast_new("float"); }
-         | T_BOOL { $$ = ast_new("bool"); }
-         | T_STRING { $$ = ast_new("string"); };
+type_spec: T_VOID { $$ = ast_new("t_void"); }
+         | T_INT { $$ = ast_new("t_int"); }
+         | T_FLOAT { $$ = ast_new("t_float"); }
+         | T_BOOL { $$ = ast_new("t_bool"); }
+         | T_STRING { $$ = ast_new("t_string"); };
 
 %%
 
