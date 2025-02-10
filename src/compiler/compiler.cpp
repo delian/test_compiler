@@ -1,2 +1,4 @@
-#include "../parser/ast.h"  // Fix later the search paths
+#include "ast.h"
+
+
 

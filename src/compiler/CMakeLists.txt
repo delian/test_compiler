@@ -16,5 +16,6 @@ conan_cmake_install(PATH_OR_REFERENCE .
 find_package(LLVM REQUIRED)
 
 add_library(${PROJECT_NAME} compiler.cpp)
+target_include_directories(${PROJECT_NAME} PUBLIC ${LLVM_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/../parser)
 target_link_libraries(${PROJECT_NAME} PRIVATE llvm-core::llvm-core)
 
