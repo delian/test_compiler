@@ -1,4 +1,4 @@
-%option noyywrap nodefault debug stack
+%option noyywrap nodefault stack debug
 
 %x COMMENT
 %x INCLUDE
