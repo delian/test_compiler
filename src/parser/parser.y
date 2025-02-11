@@ -219,8 +219,8 @@ int pmain() {
             printf("Parse error\n");
         } else {
             ast_print(ast);
+            ast_free(ast); // Auto free of the AST shall be implemented
         }
-        ast_free(ast);
         ast = NULL;
     }
     return 0;
