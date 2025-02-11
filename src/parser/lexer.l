@@ -1,5 +1,7 @@
 %option noyywrap nodefault debug
 
+%x COMMENT
+
 %{
 #include "../temp/bison_parser.h"
 %}
@@ -8,6 +10,11 @@
 %%
 
 [ \t\n]                     ;
+\/\*                        BEGIN(COMMENT);
+<COMMENT>[^*\n]*            ;
+<COMMENT>\n                 ;
+<COMMENT>\*+[^*/\n]*        ;
+<COMMENT>\*+\/              BEGIN(INITIAL);
 #.*                         ; // Ignore a comment
 [0-9]+\.[0-9]*              { yylval.fval = atof(yytext); return FLOAT; }
 [0-9]+                      { yylval.ival = atoi(yytext); return INTEGER; }
