@@ -11,10 +11,12 @@
 
 [ \t\n]                     ;
 \/\*                        BEGIN(COMMENT);
-<COMMENT>[^*\n]*            ;
-<COMMENT>\n                 ;
-<COMMENT>\*+[^*/\n]*        ;
-<COMMENT>\*+\/              BEGIN(INITIAL);
+<COMMENT>{
+    [^*\n]*                 ;
+    \n                      ;
+    \*+[^*/\n]*             ;
+    \*+\/                   BEGIN(INITIAL);
+}
 #.*                         ; // Ignore a comment
 [0-9]+\.[0-9]*              { yylval.fval = atof(yytext); return FLOAT; }
 [0-9]+                      { yylval.ival = atoi(yytext); return INTEGER; }
