@@ -9,8 +9,8 @@ set(CMAKE_BUILD_TYPE Release)
 # set(BUILD_SHARED_LIBS OFF)
 # set(CMAKE_EXE_LINKER_FLAGS "-static")
 
+file(COPY lang-tests DESTINATION ${CMAKE_BINARY_DIR})
 add_subdirectory(src/conan)
-
 add_subdirectory(src/parser)
 add_subdirectory(src/compiler)
 

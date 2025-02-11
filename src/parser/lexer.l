@@ -74,7 +74,7 @@ declare                     { return DECLARE; }
 include                     { BEGIN(INCLUDE); }
 <INCLUDE>{
     [ \t]                   ;
-    [a-zA-Z0-9_\/\.]+       { 
+    [a-zA-Z0-9_\/\-\.]+       { 
                                 if (include_stack_top >= MAX_INCLUDE_DEPTH) {
                                     fprintf(stderr, "Include depth is too deep\n");
                                     yyterminate();
