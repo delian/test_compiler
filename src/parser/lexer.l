@@ -79,9 +79,7 @@ include                     { BEGIN(INCLUDE); }
                                     fprintf(stderr, "Include depth is too deep\n");
                                     yyterminate();
                                 }
-
                                 include_stack[include_stack_top++] = YY_CURRENT_BUFFER;
-
                                 yyin = fopen(yytext, "r");
                                 if (!yyin) {
                                     fprintf(stderr, "Cannot open include file: %s\n", yytext);
@@ -100,8 +98,6 @@ include                     { BEGIN(INCLUDE); }
                                 yyterminate(); 
                             }
 <<EOF>>                     {
-                                printf("We are at the end of the file, include_stack_top=%d\ YY_CURRENT_BUFFER=%s\n", include_stack_top, !YY_CURRENT_BUFFER);
-
                                 if (include_stack_top > 0) {
                                     fclose(yyin);
                                     yy_delete_buffer(YY_CURRENT_BUFFER);
