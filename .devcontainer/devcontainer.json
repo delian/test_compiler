@@ -18,7 +18,7 @@
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "sudo apt update && sudo apt upgrade -y && sudo apt install -y cmake ninja-build python3-pip build-essential bison flex gdb && sudo pip install conan",
+	// "postCreateCommand": "sudo apt update && sudo apt upgrade -y && sudo apt install -y cmake ninja-build python3-pip build-essential bison flex gdb graphviz && sudo pip install conan",
 	"postCreateCommand": "conan profile detect",
 	"customizations": {
 		"vscode": {
