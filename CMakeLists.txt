@@ -14,8 +14,6 @@ add_subdirectory(src/conan)
 add_subdirectory(src/parser)
 add_subdirectory(src/compiler)
 
-find_package(LLVM REQUIRED)
-
 add_executable(${PROJECT_NAME} src/main.c)
 
 target_link_libraries(${PROJECT_NAME} parser compiler)
