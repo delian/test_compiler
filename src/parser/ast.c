@@ -2,11 +2,12 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-AST *ast_new(char *type)
+AST *ast_new(char *type, AST_TYPE type_enum)
 {
     AST *node = malloc(sizeof(AST));
     node->child = NULL;
     node->type = type;
+    node->type_enum = type_enum;
     node->len = 0;
     node->value = NULL;
     node->value_str = NULL;
@@ -32,9 +33,9 @@ void ast_add(AST *node, int n, ...)
     va_end(args);
 }
 
-AST *ast_new_add(char *type, int n, ...)
+AST *ast_new_add(char *type, AST_TYPE type_enum, int n, ...)
 {
-    AST *node = ast_new(type);
+    AST *node = ast_new(type, type_enum);
     va_list args;
 
     node->child = realloc(node->child, (node->len + n) * sizeof(AST *));

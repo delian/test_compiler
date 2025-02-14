@@ -51,11 +51,7 @@ program_block: program_block glob_variable { $$ = $1; ast_add($$, 1, $2); }
              | program_block SEMICOLON { $$ = $1; }
              | SEMICOLON {} // Empty statement
              | program_block declare_function { $$ = $1; ast_add($$, 1, $2); }
-             | declare_function { $$ = ast_new_add("program_block", 1, $1); }
-             | program_block glob_include { $$ = $1; ast_add($$, 1, $2); }
-             | glob_include { $$ = ast_new_add("program_block", 1, $1); };
-
-glob_include: INCLUDE NAME { $$ = ast_new("glob_include"); $$->value = $2; value_str($$, "%s", $2); }; // This have to be implemented in the parser and skipping the AST itself
+             | declare_function { $$ = ast_new_add("program_block", 1, $1); };
 
 glob_variable: variable_declaration SEMICOLON { $$ = ast_new_add("glob_variable", 1, $1); };
 
