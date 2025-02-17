@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.10)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_BINARY_DIR})
 
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)  # Prevent overriding the parrent project settings on Windows
+
 conan_cmake_configure(REQUIRES
                       gtest/1.15.0
                       GENERATORS CMakeDeps CMakeToolchain)
