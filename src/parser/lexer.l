@@ -2,9 +2,12 @@
 
 %x COMMENT
 %x INCLUDE
+%x QUOTE_STRING
+%x APOSTROPHE_STRING
 
 %{
 #include <stdio.h>
+#include "../ast.h"
 #include "../temp/bison_parser.h"
 
 #define MAX_INCLUDE_DEPTH 10
@@ -26,6 +29,53 @@ int include_stack_top = 0;
 #.*                         ; // Ignore a comment in a single line
 [0-9]+\.[0-9]*              { yylval.fval = atof(yytext); return FLOAT; }
 [0-9]+                      { yylval.ival = atoi(yytext); return INTEGER; }
+\"                          { 
+                                yylval.sval = strdup("");
+                                BEGIN(QUOTE_STRING); 
+                            }
+\'                          { 
+                                yylval.sval = strdup("");
+                                BEGIN(APOSTROPHE_STRING);
+                            }
+<QUOTE_STRING,APOSTROPHE_STRING>\\. {
+                                char *sval;
+                                switch (yytext[1]) {
+                                    case 'n': {
+                                        sval = ssprintf("%s\n", yylval.sval);
+                                        break;
+                                    }
+                                    case 't': {
+                                        sval = ssprintf("%s\t", yylval.sval);
+                                        break;
+                                    }
+                                    case 'r': {
+                                        sval = ssprintf("%s\r", yylval.sval);
+                                        break;
+                                    }
+                                    case '0': {
+                                        sval = ssprintf("%s\0", yylval.sval);
+                                        break;
+                                    }
+                                    default: {
+                                        sval = ssprintf("%s%c", yylval.sval, yytext[1]);
+                                    }
+
+                                }
+                                free(yylval.sval);
+                                yylval.sval = sval;
+                            }
+<QUOTE_STRING>[^\\"]*       {
+                                char *sval = ssprintf("%s%s", yylval.sval, yytext);
+                                free(yylval.sval);
+                                yylval.sval = sval;
+                            }
+<APOSTROPHE_STRING>[^\\']*  {
+                                char *sval = ssprintf("%s%s", yylval.sval, yytext);
+                                free(yylval.sval);
+                                yylval.sval = sval;
+                            }
+<QUOTE_STRING>\"            { BEGIN(INITIAL); return STRING; }
+<APOSTROPHE_STRING>\'       { BEGIN(INITIAL); return STRING; }
 "+"                         { return PLUS; }
 "-"                         { return MINUS; }
 "*"                         { return TIMES; }

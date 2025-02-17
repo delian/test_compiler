@@ -17,6 +17,7 @@
 %token <fval> FLOAT
 %token <ival> INTEGER
 %token <sval> NAME
+%token <sval> STRING
 %token SEMICOLON
 %token COMMA
 %token INCLUDE LPAREN RPAREN RETURN CONTINUE BREAK WHILE FOR IF 
@@ -150,6 +151,7 @@ factor_val: INTEGER { $$ = ast_new(AST_FACTOR_VAL); $$->value = &(int){$1}; valu
       | MINUS INTEGER { $$ = ast_new(AST_FACTOR_VAL_NEG); $$->value = &(int){$2}; value_str($$, "%d", $2); }
       | FLOAT { $$ = ast_new(AST_FACTOR_VAL); $$->value = &(float){$1}; value_str($$, "%f", $1); }
       | MINUS FLOAT { $$ = ast_new(AST_FACTOR_VAL_NEG); $$->value = &(float){$2}; value_str($$, "%f", $2); };
+      | STRING
 
 variable: NAME { $$ = ast_new(AST_VARIABLE); $$->value = $1; value_str($$, "%s", $1); };
 
