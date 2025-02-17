@@ -7,7 +7,7 @@ void Compiler::compile(AST *node)
         return;
     }
 
-    switch (node->type_enum)
+    switch (node->type)
     {
         default:
             printf("Unknown node type\n");

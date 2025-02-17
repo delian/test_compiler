@@ -6,7 +6,7 @@
 
 typedef struct AST AST;
 
-enum AST_TYPE
+typedef enum AST_TYPE
 {
     AST_UNDEFINED,
     AST_PROGRAM,
@@ -58,6 +58,7 @@ enum AST_TYPE
     AST_VARIABLE,
     AST_FUNCTION_CALL,
     AST_PARAMETERS_EXP,
+    AST_PARAMETER_EXP,
     AST_VARIABLE_ASSIGNMENT,
     AST_VARIABLE_DECLARATION,
     AST_T_VOID,
@@ -65,13 +66,11 @@ enum AST_TYPE
     AST_T_FLOAT,
     AST_T_BOOL,
     AST_T_STRING,
-};
+} AST_TYPE;
 
-typedef enum AST_TYPE AST_TYPE;
 struct AST
 {
-    char *type;
-    AST_TYPE type_enum;
+    AST_TYPE type;
     void *value;
     char *value_str;
     int len;
@@ -79,8 +78,8 @@ struct AST
 };
 
 extern AST *ast;
-extern AST *ast_new(char *type);
-extern AST *ast_new_add(char *type, int n, ...);
+extern AST *ast_new(AST_TYPE type);
+extern AST *ast_new_add(AST_TYPE type, int n, ...);
 extern void ast_add(AST *node, int n, ...);
 extern void ast_print(AST *node);
 extern void ast_free(AST *node);
