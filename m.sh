@@ -1,5 +1,3 @@
-mkdir -p build
-cd build
-cmake profile detect
-cmake ..
-cmake --build .
+conan profile detect
+cmake -S . -B build -G Ninja
+cmake --build build -v
