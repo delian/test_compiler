@@ -8,12 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_CXX_FLAGS --coverage)
-
 set(CMAKE_BUILD_TYPE Release)
-# set(BUILD_SHARED_LIBS OFF)
-# set(CMAKE_EXE_LINKER_FLAGS "-static")
-
-# set(ENV{TEST_DIR_PATH} ${CMAKE_BINARY_DIR}/lang-tests)
 
 enable_testing()
 
