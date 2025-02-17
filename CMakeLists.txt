@@ -13,6 +13,7 @@ file(COPY lang-tests DESTINATION ${CMAKE_BINARY_DIR})
 add_subdirectory(src/conan)
 add_subdirectory(src/parser)
 add_subdirectory(src/compiler)
+add_subdirectory(src/tests)
 
 add_executable(${PROJECT_NAME} src/main.c)
 
