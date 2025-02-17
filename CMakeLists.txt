@@ -13,6 +13,8 @@ set(CMAKE_BUILD_TYPE Release)
 # set(BUILD_SHARED_LIBS OFF)
 # set(CMAKE_EXE_LINKER_FLAGS "-static")
 
+# set(ENV{TEST_DIR_PATH} ${CMAKE_BINARY_DIR}/lang-tests)
+
 enable_testing()
 
 file(COPY lang-tests DESTINATION ${CMAKE_BINARY_DIR})
