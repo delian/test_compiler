@@ -37,7 +37,7 @@
 %type <ast> bool_exp_and bool_exp_or bool_exp_xor
 %type <ast> while_statement block break_statement continue_statement return_statement
 %type <ast> if_statement for_statement statement statements parameter parameters
-%type <ast> function_declaration declare_function glob_variable glob_include
+%type <ast> function_declaration declare_function glob_variable
 
 %%
 
@@ -193,6 +193,20 @@ static char *line_read = (char *)NULL;
 
 void yyerror ( char *s ) {
     printf("ERROR: %s\n", s);
+}
+
+extern FILE *yyin;
+
+int parse_file(char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        printf("Error: Could not open file '%s'\n", filename);
+        return 1;
+    }
+    yyin = file;
+    int parse_err = yyparse();
+    fclose(file);
+    return parse_err;
 }
 
 

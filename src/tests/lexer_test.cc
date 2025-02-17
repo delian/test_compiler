@@ -3,23 +3,20 @@
 #include <iostream>
 #include <filesystem>
 #include <string>
+#include <cstdlib>
 
-// Demonstrate some basic assertions.
-TEST(ParsingTest, ParsingFiles)
-{
-    // Expect two strings not to be equal.
-    EXPECT_STRNE("hello", "hello2");
-    // Expect equality.
-    EXPECT_EQ(7 * 6, 42);
-};
+#define TESTDIRENV "TEST_DIR_PATH"
+#define TESTDIRPATH "../../lang-tests"
+
+extern "C" int parse_file(const char *filename);
 
 TEST(ParsingTest, ParsingFilesDir) {
-    std::string path = "../../lang-tests"; // TODO: take this from a parameter
+    std::string path = std::getenv(TESTDIRENV) != nullptr ? std::getenv(TESTDIRENV) : TESTDIRPATH;
     for (const auto & entry : std::filesystem::directory_iterator(path)) {
         if (!entry.is_regular_file()) continue;
         const auto base_name = entry.path().filename().string();
         if (base_name.find(".ll") == std::string::npos) continue;
-        std::cout << entry.path() << std::endl;
+        std::cout << "Parsing file " << entry.path() << std::endl;
+        EXPECT_EQ(parse_file(entry.path().string().c_str()),0);
     }
-    EXPECT_EQ(1, 1);
 };
