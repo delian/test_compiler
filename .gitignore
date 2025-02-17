@@ -5,3 +5,4 @@ CMakeUserPresets.json
 *.o
 temp/
 .vscode/
+result
