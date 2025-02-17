@@ -7,8 +7,8 @@
 
 %{
 #include <stdio.h>
-#include "../ast.h"
-#include "../temp/bison_parser.h"
+#include <ast.h>
+#include "bison_parser.h"
 
 #define MAX_INCLUDE_DEPTH 10
 YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];

@@ -1,6 +1,6 @@
 %{
     #include <stdio.h>
-    #include "../ast.h"
+    #include <ast.h>
     
     extern int yylex();
     extern int yyparse();
