@@ -9,7 +9,7 @@
 
 %union {
     int ival;
-    int fval;
+    float fval;
     char *sval;
     struct AST *ast;
 }

@@ -1,7 +1,6 @@
 #ifndef AST_H
 #define AST_H
 
-// #include <stdio.h>
 #include <stdlib.h>
 
 typedef struct AST AST;
@@ -84,10 +83,12 @@ extern void ast_add(AST *node, int n, ...);
 extern void ast_print(AST *node);
 extern void ast_free(AST *node);
 
-#define ssprintf(...) ({         \
-    char *str = NULL;            \
-    asprintf(&str, __VA_ARGS__); \
-    str;                         \
+// SO MUCH HATE THAT I CANNOT USE asprintf AND REMOVE THE STUPID WARNING IN CMAKE!!!!
+#define ssprintf(...) ({                       \
+    int size = snprintf(NULL, 0, __VA_ARGS__); \
+    char *str = malloc(size + 1);              \
+    sprintf(str, __VA_ARGS__);                 \
+    str;                                       \
 })
 
 #define value_str(node, ...) (node->value_str = ssprintf(__VA_ARGS__))
