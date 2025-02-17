@@ -14,9 +14,11 @@ TEST(ParsingTest, ParsingFiles)
 };
 
 TEST(ParsingTest, ParsingFilesDir) {
-    std::string path = "../../lang-tests";
-    std::cout << "Current path is " << std::filesystem::current_path() << std::endl;
+    std::string path = "../../lang-tests"; // TODO: take this from a parameter
     for (const auto & entry : std::filesystem::directory_iterator(path)) {
+        if (!entry.is_regular_file()) continue;
+        const auto base_name = entry.path().filename().string();
+        if (base_name.find(".ll") == std::string::npos) continue;
         std::cout << entry.path() << std::endl;
     }
     EXPECT_EQ(1, 1);

@@ -7,7 +7,8 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)  # Prevent overriding the par
 
 conan_cmake_configure(REQUIRES
                       gtest/1.15.0
-                      GENERATORS CMakeDeps CMakeToolchain)
+                      GENERATORS
+                      CMakeDeps CMakeToolchain)
 conan_cmake_install(PATH_OR_REFERENCE .
                     BUILD missing
                     REMOTE conancenter
