@@ -5,8 +5,8 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_BINARY_DIR})
 
 conan_cmake_configure(REQUIRES
-                      llvm-core/13.0.0
-                      GENERATORS CMakeDeps)
+                    llvm-core/13.0.0
+                    GENERATORS CMakeDeps)
 conan_cmake_install(PATH_OR_REFERENCE .
                     BUILD missing
                     REMOTE conancenter
