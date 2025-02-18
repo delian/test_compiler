@@ -7,6 +7,7 @@
 
 #define TESTDIRENV "TEST_DIR_PATH"
 #define TESTDIRPATH "../../lang-tests"
+#define TESTPATTERN ".ll"
 
 extern "C" int parse_file(const char *filename);
 
@@ -15,7 +16,7 @@ TEST(ParsingTest, ParsingFilesDir) {
     for (const auto & entry : std::filesystem::directory_iterator(path)) {
         if (!entry.is_regular_file()) continue;
         const auto base_name = entry.path().filename().string();
-        if (base_name.find(".ll") == std::string::npos) continue;
+        if (base_name.find(TESTPATTERN) == std::string::npos) continue;
         std::cout << "Parsing file " << entry.path() << std::endl;
         EXPECT_EQ(parse_file(entry.path().string().c_str()),0);
     }
