@@ -4,7 +4,7 @@
   description = "TestCompiler Nix Flake";
 
   inputs = {
-    nixurl = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
   };
 
   outputs = { self, nixpkgs, ... }:
@@ -16,7 +16,9 @@
         name = "testcompiler";
         nativeBuildInputs = with pkgs; [
           clang
+          conan
           cmake
+          gnumake
           git
           ninja
         ];
