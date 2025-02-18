@@ -1,7 +1,5 @@
 {
-# TODO: Make this flake working
-
-  description = "TestCompiler Nix Flake";
+  description = "TestCompiler Nix Flake Development Environment";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
