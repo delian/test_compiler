@@ -37,8 +37,8 @@
         }
       );
     in rec {
-      apps.default = flake-utils.lib.mkApp {
-        drv = packages.default;
+      apps.${system}.default = flake-utils.lib.mkApp {
+        drv = packages.${system}.default;
       };
       packages.default = ply;
       devShells.default = pkgs.mkShell {
