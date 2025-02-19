@@ -1,19 +1,21 @@
-cmake_minimum_required(VERSION 3.15)
-project(ply C)
+cmake_minimum_required(VERSION 3.14)
+project(ply C CXX)
 
 set(CMAKE_WARN_DEPRECATED 1)
 set(CMAKE_WARN_UNUSED_CLI 1)
-set(CMAKE_VERBOSE_MAKEFILE 1)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_CXX_FLAGS --coverage)
+set(CMAKE_BUILD_TYPE Release)
 
-set(CMAKE_BUILD_TYPE RelWithDebInfo)
-# set(BUILD_SHARED_LIBS OFF)
-# set(CMAKE_EXE_LINKER_FLAGS "-static")
+enable_testing()
 
+file(COPY lang-tests DESTINATION ${CMAKE_BINARY_DIR})
 add_subdirectory(src/conan)
 add_subdirectory(src/parser)
 add_subdirectory(src/compiler)
-
-find_package(LLVM REQUIRED)
+add_subdirectory(src/tests)
 
 add_executable(${PROJECT_NAME} src/main.c)
 
