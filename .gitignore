@@ -6,3 +6,7 @@ CMakeUserPresets.json
 temp/
 .vscode/
 result
+tags
+*.d
+*.so
+

@@ -30,7 +30,7 @@ flex_target(lexer lexer.l ${FLEX_OUT})
 
 add_flex_bison_dependency(lexer parser)
 
-set_source_files_properties(ast.c PROPERTIES COMPILE_FLAGS "-g -O0")
+# set_source_files_properties(ast.c PROPERTIES COMPILE_FLAGS "-g -O0")
 include_directories(${readline_INCLUDE_DIRS})
 add_library(${PROJECT_NAME} ${FLEX_lexer_OUTPUTS} ${BISON_parser_OUTPUTS} ${readline_INCLUDE_DIRS} ast.c)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${readline_LIBRARIES})
