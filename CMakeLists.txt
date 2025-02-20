@@ -21,3 +21,10 @@ add_executable(${PROJECT_NAME} src/main.c)
 
 target_link_libraries(${PROJECT_NAME} parser compiler)
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+
+set_source_files_properties(tags PROPERTIES GENERATED true)
+add_custom_target(tags
+    COMMAND ctags -R --c++-kinds=+p --fields=+iaS --extras=+q .
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+
