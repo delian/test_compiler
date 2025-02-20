@@ -24,7 +24,7 @@ install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 
 set_source_files_properties(tags PROPERTIES GENERATED true)
 add_custom_target(tags
-    COMMAND ctags -R --c++-kinds=+p --fields=+iaS --extras=+q .
+    COMMAND ctags -R --c++-kinds=+p --fields=+iaS --extras=+-Ffqpqrs .
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 
