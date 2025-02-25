@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_CXX_FLAGS --coverage)
-set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Debug)
 
 enable_testing()
 
@@ -27,4 +27,3 @@ add_custom_target(tags
     COMMAND ctags -R --c++-kinds=+p --fields=+iaS --extras=+-Ffqpqrs .
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
-

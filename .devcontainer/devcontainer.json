@@ -4,15 +4,20 @@
 	"name": "Ubuntu",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	// "image": "mcr.microsoft.com/devcontainers/base:jammy",
-	"build": {
-		"dockerfile": "Dockerfile",
-		// Update 'VARIANT' to pick a non-default Dockerfile variant. More info: https://aka.ms/vscode-remote/containers/image-build
-		// "args": { "VARIANT": "buster" }
-	},
-	"runArgs": [
-		"--memory=20gb",
-		"--memory-swap=32gb"
-	],
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "lltest",
+	"workspaceFolder": "/workspace",
+	"shutdownAction": "stopCompose",
+	// "build": {
+	// 	"dockerfile": "Dockerfile",
+	// 	// Update 'VARIANT' to pick a non-default Dockerfile variant. More info: https://aka.ms/vscode-remote/containers/image-build
+	// 	// "args": { "VARIANT": "buster" }
+	// },
+	// "runArgs": [
+	// 	"--memory=20gb",
+	// 	"--memory-swap=32gb",
+	// 	"--cpus=2"
+	// ],
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
@@ -55,7 +60,8 @@
 				"ms-vscode.vscode-commander",
 				"daohong-emilio.yash",
 				"ms-azuretools.vscode-docker",
-				"esbenp.prettier-vscode"
+				"esbenp.prettier-vscode",
+				"hediet.debug-visualizer"
 			]
 		}
 	},

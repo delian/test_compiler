@@ -1,0 +1,16 @@
+services:
+  lltest:
+    # container_name: lltest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    cpu_count: 2
+    mem_limit: 30g
+    volumes:
+      - ..:/workspace:cached
+      - type: volume
+        source: conan_cache
+        target: /home/vscode/.conan
+    command: /bin/sleep 300000
+volumes:
+  conan_cache:

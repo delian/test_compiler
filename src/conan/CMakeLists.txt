@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-set(CONAN_HOST_PROFILE default)
+set(CONAN_HOST_PROFILE debug)
 
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
   message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
