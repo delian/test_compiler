@@ -10,7 +10,7 @@ services:
       - ..:/workspace:cached
       - type: volume
         source: conan_cache
-        target: /home/vscode/.conan
+        target: /home/vscode/.conan2
     command: /bin/sleep 300000
 volumes:
   conan_cache:
