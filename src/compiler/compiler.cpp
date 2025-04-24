@@ -2,6 +2,7 @@
 
 using namespace std;
 
+/*
 Compiler::Compiler(string module_name) : Module(std::make_unique<llvm::Module>(module_name, Context)), Builder(Context)
 {
     this->Name = module_name; // TODO: check later if I want to keep it at all
@@ -31,3 +32,6 @@ void *Compiler::compile(AST *node) // The return format have to be changed
         BB = llvm::BasicBlock::Create(Context, (const char *)node->value, fn);
     }
     }
+}
+
+*/

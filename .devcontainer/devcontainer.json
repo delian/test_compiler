@@ -61,7 +61,17 @@
 				"daohong-emilio.yash",
 				"ms-azuretools.vscode-docker",
 				"esbenp.prettier-vscode",
-				"hediet.debug-visualizer"
+				"hediet.debug-visualizer",
+				"streetsidesoftware.code-spell-checker",
+				"EditorConfig.EditorConfig",
+				"bierner.github-markdown-preview",
+				"ms-vsliveshare.vsliveshare",
+				"bierner.markdown-mermaid",
+				"mechatroner.rainbow-csv",
+				"ms-vscode-remote.vscode-remote-extensionpack",
+				"ms-vscode.remote-explorer",
+				"vscode-icons-team.vscode-icons",
+				"ms-vscode-remote.remote-wsl"
 			]
 		}
 	},
