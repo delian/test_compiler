@@ -11,13 +11,17 @@
 
 using namespace std;
 
-class Compiler {
+class Compiler
+{
 private:
   string Name;
 
   llvm::LLVMContext Context;
   std::unique_ptr<llvm::Module> Module;
   llvm::IRBuilder<> Builder;
+  llvm::BasicBlock *CurrentBlock;
+
+  ~Compiler();
 
 public:
   Compiler(string module_name);

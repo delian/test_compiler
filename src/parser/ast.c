@@ -2,8 +2,10 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-char *ast_type_to_string(AST_TYPE type) {
-  switch (type) {
+char *ast_type_to_string(AST_TYPE type)
+{
+  switch (type)
+  {
   case AST_UNDEFINED:
     return "AST_UNDEFINED";
   case AST_PROGRAM:
@@ -124,7 +126,8 @@ char *ast_type_to_string(AST_TYPE type) {
   return ssprintf("Unknown AST_TYPE %d", type);
 }
 
-AST *ast_new(AST_TYPE type) {
+AST *ast_new(AST_TYPE type)
+{
   AST *node = malloc(sizeof(AST));
   node->child = NULL;
   node->type = type;
@@ -134,13 +137,15 @@ AST *ast_new(AST_TYPE type) {
   return node;
 }
 
-void ast_add(AST *node, int n, ...) {
+void ast_add(AST *node, int n, ...)
+{
   va_list args;
 
   node->child = realloc(node->child, (node->len + n) * sizeof(AST *));
   int total = node->len + n;
 
-  for (va_start(args, n); node->len < total; node->len++) {
+  for (va_start(args, n); node->len < total; node->len++)
+  {
     AST *child = va_arg(args, AST *);
     if (child == NULL)
       continue;
@@ -151,14 +156,16 @@ void ast_add(AST *node, int n, ...) {
   va_end(args);
 }
 
-AST *ast_new_add(AST_TYPE type, int n, ...) {
+AST *ast_new_add(AST_TYPE type, int n, ...)
+{
   AST *node = ast_new(type);
   va_list args;
 
   node->child = realloc(node->child, (node->len + n) * sizeof(AST *));
   int total = node->len + n;
 
-  for (va_start(args, n); node->len < total; node->len++) {
+  for (va_start(args, n); node->len < total; node->len++)
+  {
     AST *child = va_arg(args, AST *);
     if (child == NULL)
       continue;
@@ -170,8 +177,10 @@ AST *ast_new_add(AST_TYPE type, int n, ...) {
   return node;
 }
 
-void ast_free(AST *node) {
-  for (int i = 0; i < node->len; i++) {
+void ast_free(AST *node)
+{
+  for (int i = 0; i < node->len; i++)
+  {
     ast_free(node->child[i]);
   }
   free(node->value_str); // Explicit malloc needs to be freed. I won't do this
@@ -182,7 +191,8 @@ void ast_free(AST *node) {
   free(node);
 }
 
-void ast_print_depth(AST *node, int depth) {
+void ast_print_depth(AST *node, int depth)
+{
   for (int i = 0; i < depth; i++)
     printf("|  ");
   printf("Type: '%s' Value: '%s'", ast_type_to_string(node->type),
